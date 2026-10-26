@@ -1,0 +1,144 @@
+"""Contrato de datos y extracción de características del banco hidráulico.
+
+Cada ciclo de 60 s trae 43 680 lecturas repartidas en 17 sensores con frecuencias de 1, 10
+y 100 Hz. Este módulo las resume en una tabla de una fila por ciclo, que es lo que ven
+tanto el baseline como los modelos.
+
+Decisiones de diseño, todas declaradas antes de medir:
+
+- **Objetivo: la válvula.** Ningún sensor individual la delata (correlación máxima 0.231),
+  de modo que es una anomalía contextual real. El refrigerador se descartó porque TS1 sola
+  correlaciona -0.911 con su estado: un operador lo vería en el termómetro.
+- **Solo ciclos estables.** Los 1080 ciclos con válvula degradada son todos estables,
+  mientras que de los 1125 óptimos solo 369 lo son. Incluir los transitorios permitiría
+  aprender «transitorio implica sano» y acertar 756 casos sin entender nada.
+- **Partición estratificada, no cronológica.** El archivo está ordenado por el estado del
+  refrigerador (correlación del índice con ese estado: +0.884), así que un corte temporal
+  entrenaría con un solo régimen de refrigeración.
+- **Sensores virtuales marcados.** CE, CP y SE no se miden: se calculan. Se conservan, pero
+  `SENSORES_VIRTUALES` permite la ablación que comprueba que el resultado no depende de
+  ellos.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+RAIZ = Path(__file__).resolve().parents[2]
+CRUDO = RAIZ / "data" / "crudo"
+
+SENSORES: dict[str, tuple[int, str]] = {
+    "PS1": (100, "bar"), "PS2": (100, "bar"), "PS3": (100, "bar"),
+    "PS4": (100, "bar"), "PS5": (100, "bar"), "PS6": (100, "bar"),
+    "EPS1": (100, "W"),
+    "FS1": (10, "l/min"), "FS2": (10, "l/min"),
+    "TS1": (1, "degC"), "TS2": (1, "degC"), "TS3": (1, "degC"), "TS4": (1, "degC"),
+    "VS1": (1, "mm/s"),
+    "CE": (1, "%"), "CP": (1, "kW"), "SE": (1, "%"),
+}
+SENSORES_VIRTUALES = ("CE", "CP", "SE")
+ESTADISTICOS = ("media", "desv", "min", "max", "pendiente")
+
+COLUMNAS_PERFIL = ("refrigerador", "valvula", "fuga_bomba", "acumulador", "estable")
+VALVULA_OPTIMA = 100
+VALVULA_NIVELES = {100: "optimo", 90: "retardo pequeno", 80: "retardo severo",
+                   73: "cerca del fallo total"}
+
+
+def _pendiente(matriz: np.ndarray) -> np.ndarray:
+    """Pendiente de mínimos cuadrados de cada fila contra un tiempo normalizado a [0, 1]."""
+    n = matriz.shape[1]
+    t = np.linspace(0.0, 1.0, n)
+    t_centrado = t - t.mean()
+    return (matriz - matriz.mean(axis=1, keepdims=True)) @ t_centrado / (t_centrado @ t_centrado)
+
+
+def resumir_sensor(matriz: np.ndarray) -> dict[str, np.ndarray]:
+    """Cinco estadísticos por ciclo. La media es lo que mostraría una aguja del panel."""
+    return {
+        "media": matriz.mean(axis=1),
+        "desv": matriz.std(axis=1),
+        "min": matriz.min(axis=1),
+        "max": matriz.max(axis=1),
+        "pendiente": _pendiente(matriz),
+    }
+
+
+def construir_tabla(crudo: Path = CRUDO) -> pd.DataFrame:
+    """Lee los 17 archivos de sensor y el perfil, y devuelve una fila por ciclo."""
+    perfil = np.loadtxt(crudo / "profile.txt")
+    if perfil.shape[1] != len(COLUMNAS_PERFIL):
+        raise ValueError(f"profile.txt debería tener {len(COLUMNAS_PERFIL)} columnas")
+
+    columnas: dict[str, np.ndarray] = {}
+    for sensor in SENSORES:
+        matriz = np.loadtxt(crudo / f"{sensor}.txt")
+        if matriz.shape[0] != perfil.shape[0]:
+            raise ValueError(f"{sensor}.txt tiene {matriz.shape[0]} ciclos, "
+                             f"el perfil tiene {perfil.shape[0]}")
+        for nombre, valores in resumir_sensor(matriz).items():
+            columnas[f"{sensor}_{nombre}"] = valores
+
+    tabla = pd.DataFrame(columnas)
+    tabla.insert(0, "ciclo", np.arange(len(tabla)))
+    for i, nombre in enumerate(COLUMNAS_PERFIL):
+        tabla[nombre] = perfil[:, i]
+    tabla["anomalia"] = (tabla.valvula != VALVULA_OPTIMA).astype(int)
+    tabla["severidad"] = tabla.valvula.map(VALVULA_NIVELES)
+    return tabla
+
+
+def solo_estables(tabla: pd.DataFrame) -> pd.DataFrame:
+    """Descarta los ciclos que pueden no haber alcanzado régimen estacionario."""
+    return tabla[tabla.estable == 0].reset_index(drop=True)
+
+
+def columnas_sensor(tabla: pd.DataFrame, incluir_virtuales: bool = True) -> list[str]:
+    virtuales = () if incluir_virtuales else SENSORES_VIRTUALES
+    return [c for c in tabla.columns
+            if "_" in c and c.split("_")[0] in SENSORES
+            and c.split("_")[0] not in virtuales]
+
+
+def columnas_aguja(tabla: pd.DataFrame, incluir_virtuales: bool = True) -> list[str]:
+    """Las 17 medias por ciclo: lo que un operador leería en el panel."""
+    return [c for c in columnas_sensor(tabla, incluir_virtuales) if c.endswith("_media")]
+
+
+def validar_contrato(tabla: pd.DataFrame) -> None:
+    """Comprueba lo que el resto del proyecto da por supuesto."""
+    faltan = set(COLUMNAS_PERFIL) - set(tabla.columns)
+    if faltan:
+        raise ValueError(f"Faltan columnas del perfil: {sorted(faltan)}")
+    esperadas = len(SENSORES) * len(ESTADISTICOS)
+    hay = len(columnas_sensor(tabla))
+    if hay != esperadas:
+        raise ValueError(f"Se esperaban {esperadas} columnas de sensor y hay {hay}")
+    if tabla[columnas_sensor(tabla)].isna().any().any():
+        raise ValueError("Hay valores ausentes en las columnas de sensor")
+    if not set(tabla.anomalia.unique()) <= {0, 1}:
+        raise ValueError("La etiqueta de anomalía debe ser binaria")
+    if not set(tabla.valvula.unique()) <= set(VALVULA_NIVELES):
+        raise ValueError(f"Niveles de válvula inesperados: {sorted(tabla.valvula.unique())}")
+
+
+def particion(tabla: pd.DataFrame, fraccion_prueba: float = 0.3, semilla: int = 42
+              ) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Partición estratificada por nivel de válvula.
+
+    No es cronológica a propósito: el archivo está ordenado por estado del refrigerador,
+    de modo que un corte temporal confundiría el régimen de refrigeración con el objetivo.
+    """
+    from sklearn.model_selection import train_test_split
+
+    entrena, prueba = train_test_split(tabla, test_size=fraccion_prueba, random_state=semilla,
+                                       stratify=tabla.valvula)
+    return entrena.reset_index(drop=True), prueba.reset_index(drop=True)
+
+
+def solo_normales(tabla: pd.DataFrame) -> pd.DataFrame:
+    """Los ciclos con válvula óptima: lo único con lo que se entrena un detector."""
+    return tabla[tabla.anomalia == 0].reset_index(drop=True)

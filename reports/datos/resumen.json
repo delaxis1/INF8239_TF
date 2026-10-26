@@ -1,0 +1,40 @@
+{
+  "ciclos_totales": 2205,
+  "ciclos_estables": 1449,
+  "descartados_por_transitorio": 756,
+  "sensores": 17,
+  "sensores_virtuales": [
+    "CE",
+    "CP",
+    "SE"
+  ],
+  "columnas_sensor": 85,
+  "columnas_aguja": 17,
+  "objetivo": "valvula",
+  "normal": "valvula == 100",
+  "particion": {
+    "tipo": "estratificada por nivel de valvula",
+    "semilla": 42,
+    "entrenamiento": 1014,
+    "prueba": 435,
+    "normales_entrenamiento": 258
+  },
+  "niveles": {
+    "100": {
+      "etiqueta": "optimo",
+      "ciclos": 369
+    },
+    "90": {
+      "etiqueta": "retardo pequeno",
+      "ciclos": 360
+    },
+    "80": {
+      "etiqueta": "retardo severo",
+      "ciclos": 360
+    },
+    "73": {
+      "etiqueta": "cerca del fallo total",
+      "ciclos": 360
+    }
+  }
+}
