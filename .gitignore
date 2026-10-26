@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+data/crudo/
+data/*.parquet
+models/*.joblib
+models/*.pt
+reports/**/*.png
+herramientas/*.docx
+herramientas/*.pdf
+.streamlit/secrets.toml
