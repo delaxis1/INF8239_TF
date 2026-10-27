@@ -1,0 +1,3 @@
+alternativa,pr_auc,linea_de_azar,roc_auc,precision_en_20,recall,falsas_alarmas,marcados,umbral,ajuste_s,tamano_kb
+alarma_zona_roja,0.801,0.7448,0.5512,1.0,0.1975,0.1081,76,1.0,0.0067,0.0
+alarma_al_5pct_falsas,0.801,0.7448,0.5512,1.0,0.142,0.018,48,1.0132,0.0067,0.0
