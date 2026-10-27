@@ -12,10 +12,23 @@ dependencies = [
   "pyyaml>=6,<7",
   "scikit-learn>=1.7,<2",
   "streamlit>=1.49,<2",
+  "torch>=2.0,<3",
 ]
 
+# PyTorch se toma del indice de CPU: el VAE de este trabajo no usa GPU y las ruedas con
+# CUDA pesan varios gigabytes sin aportar nada aqui.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
 [dependency-groups]
-dev = ["pytest>=8.4,<9", "pytest-cov>=6,<7", "ruff>=0.13,<1"]
+dev = ["pytest>=8.4,<9", "pytest-cov>=6,<7", "ruff>=0.13,<1",
+       # Solo para generar el informe; el analisis no la necesita.
+       "python-docx>=1.2,<2"]
 
 [build-system]
 requires = ["hatchling"]
