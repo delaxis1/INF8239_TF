@@ -133,7 +133,7 @@ INF8239_TF/
 │   ├── modelos.py                Mahalanobis y VAE
 │   ├── evaluacion.py             PR-AUC, umbral y severidad
 │   └── decision.py               costo, capacidad, abstención y auditoría por régimen
-├── tests/                        38 pruebas
+├── tests/                        54 pruebas
 └── reports/                      métricas y evidencia de cada ejecución
 ```
 
@@ -143,9 +143,15 @@ INF8239_TF/
 uv run pytest -q
 ```
 
-38 pruebas: contrato de datos, prevención de fuga, extracción temporal, baseline,
-métricas, costo, abstención, auditoría por régimen, explicación por variable y arranque
-del tablero sin navegador.
+54 pruebas: contrato de datos, prevención de fuga, extracción temporal, baseline,
+métricas, costo, abstención, auditoría por régimen, explicación por variable, arranque del
+tablero sin navegador y **consistencia de la documentación** — estas últimas leen las
+cifras de `reports/` y comprueban que son las que aparecen en este README y en el Model
+Card, de modo que una ejecución nueva que cambie un resultado rompe la suite en lugar de
+dejar un documento desactualizado.
+
+La verificación de citas, licencias y reproducibilidad está en
+[`docs/VERIFICACION.md`](docs/VERIFICACION.md).
 
 ## Entorno
 
@@ -161,4 +167,6 @@ en [`docs/USO_DE_IA.md`](docs/USO_DE_IA.md).
 
 Material académico para INF-8239. El conjunto se usa bajo CC BY 4.0, citando: Helwig, N.,
 Pignanelli, E., & Schütze, A. (2015). *Condition monitoring of a complex hydraulic system
-using multivariate statistics*. IEEE I2MTC. https://doi.org/10.1109/I2MTC.2015.7151267
+using multivariate statistics*. 2015 IEEE International Instrumentation and
+Measurement Technology Conference (I2MTC) Proceedings, 210-215.
+https://doi.org/10.1109/I2MTC.2015.7151267
