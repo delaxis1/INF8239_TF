@@ -396,8 +396,8 @@ def build(ev: dict, repo_url: str | None) -> Path:
     for ref in (
         "Helwig, N., Pignanelli, E., & Schütze, A. (2015). Condition monitoring of a "
         "complex hydraulic system using multivariate statistics. 2015 IEEE International "
-        "Instrumentation and Measurement Technology Conference (I2MTC), 1-6. "
-        "https://doi.org/10.1109/I2MTC.2015.7151267",
+        "Instrumentation and Measurement Technology Conference (I2MTC) Proceedings, "
+        "210-215. https://doi.org/10.1109/I2MTC.2015.7151267",
         "Kingma, D. P., & Welling, M. (2014). Auto-encoding variational Bayes. "
         "International Conference on Learning Representations. "
         "https://doi.org/10.48550/arXiv.1312.6114",
