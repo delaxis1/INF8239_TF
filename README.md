@@ -93,7 +93,6 @@ Requiere [uv](https://docs.astral.sh/uv/).
 
 ```bash
 uv sync
-uv pip install torch --index-url https://download.pytorch.org/whl/cpu
 uv run python scripts/download_data.py
 uv run python scripts/build_features.py
 uv run pytest -q
