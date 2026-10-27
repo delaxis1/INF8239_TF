@@ -46,6 +46,25 @@ class Mahalanobis:
         X = self.escala.transform(tabla[self.columnas])
         return np.sqrt(self.covarianza.mahalanobis(X))
 
+    def contribuciones(self, tabla: pd.DataFrame) -> pd.DataFrame:
+        """Cuánto aporta cada variable a la distancia de cada ciclo.
+
+        La distancia al cuadrado es z' S⁻¹ z, así que el término i-ésimo del producto
+        z * (S⁻¹ z) reparte esa distancia entre las variables y suma exactamente el total.
+        Es la explicación que el analista necesita: no «este ciclo es raro», sino «este
+        ciclo es raro **por la presión PS2 en el tercer tramo**».
+        """
+        X = self.escala.transform(tabla[self.columnas])
+        centrado = X - self.covarianza.location_
+        aporte = centrado * (centrado @ self.covarianza.get_precision())
+        return pd.DataFrame(aporte, index=tabla.index, columns=self.columnas)
+
+    def principales(self, tabla: pd.DataFrame, cuantas: int = 5) -> list[list[tuple[str, float]]]:
+        """Las `cuantas` variables que más explican cada ciclo, de mayor a menor."""
+        aportes = self.contribuciones(tabla)
+        return [sorted(fila.items(), key=lambda par: -par[1])[:cuantas]
+                for _, fila in aportes.iterrows()]
+
     @property
     def parametros(self) -> int:
         d = len(self.columnas)
