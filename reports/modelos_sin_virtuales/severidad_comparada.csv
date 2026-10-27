@@ -1,0 +1,5 @@
+valvula_%,severidad,ciclos,baseline_agujas,mahalanobis,vae
+100,optimo,111,0.027,0.027,0.018
+90,retardo pequeno,108,0.1019,1.0,0.0926
+80,retardo severo,108,0.0741,1.0,1.0
+73,cerca del fallo total,108,0.2315,1.0,1.0

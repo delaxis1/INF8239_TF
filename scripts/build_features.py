@@ -12,7 +12,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from inf8239_tf.data import (RAIZ, SENSORES, SENSORES_VIRTUALES, VALVULA_NIVELES,
+from inf8239_tf.data import (AGREGADOS, RAIZ, SEGMENTOS_LENTOS, SEGMENTOS_RAPIDOS, SENSORES,
+                             SENSORES_LENTOS, SENSORES_RAPIDOS, SENSORES_VIRTUALES,
+                             VALVULA_NIVELES,
                              columnas_aguja, columnas_sensor, construir_tabla, particion,
                              solo_estables, solo_normales, validar_contrato)
 
@@ -50,6 +52,10 @@ def main() -> None:
         "ciclos_estables": int(len(estables)),
         "descartados_por_transitorio": int(descartados),
         "sensores": len(SENSORES),
+        "segmentos_rapidos": SEGMENTOS_RAPIDOS,
+        "segmentos_lentos": SEGMENTOS_LENTOS,
+        "sensores_rapidos": list(SENSORES_RAPIDOS),
+        "sensores_lentos": list(SENSORES_LENTOS),
         "sensores_virtuales": list(SENSORES_VIRTUALES),
         "columnas_sensor": len(columnas_sensor(estables)),
         "columnas_aguja": len(columnas_aguja(estables)),

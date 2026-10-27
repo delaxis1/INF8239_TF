@@ -10,9 +10,11 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from inf8239_tf.data import (RAIZ, SENSORES, SENSORES_VIRTUALES, VALVULA_NIVELES,
-                             VALVULA_OPTIMA, columnas_aguja, columnas_sensor, particion,
-                             resumir_sensor, solo_estables, solo_normales, validar_contrato)
+from inf8239_tf.data import (RAIZ, SEGMENTOS_LENTOS, SEGMENTOS_RAPIDOS, SENSORES,
+                             SENSORES_LENTOS, SENSORES_RAPIDOS, SENSORES_VIRTUALES,
+                             VALVULA_NIVELES, VALVULA_OPTIMA, columnas_aguja,
+                             columnas_sensor, particion, resumir_sensor, solo_estables,
+                             solo_normales, validar_contrato)
 
 CICLOS = RAIZ / "data" / "ciclos.csv"
 
@@ -28,8 +30,10 @@ def test_el_contrato_se_cumple(tabla):
     validar_contrato(tabla)
 
 
-def test_hay_cinco_estadisticos_por_sensor(tabla):
-    assert len(columnas_sensor(tabla)) == len(SENSORES) * 5
+def test_el_numero_de_columnas_cuadra(tabla):
+    esperadas = (len(SENSORES) * 2 + len(SENSORES_RAPIDOS) * SEGMENTOS_RAPIDOS
+                 + len(SENSORES_LENTOS) * SEGMENTOS_LENTOS)
+    assert len(columnas_sensor(tabla)) == esperadas == 112
     assert len(columnas_aguja(tabla)) == len(SENSORES)
 
 
@@ -38,11 +42,18 @@ def test_la_tabla_guardada_solo_tiene_ciclos_estables(tabla):
     assert len(tabla) == 1449
 
 
-def test_la_pendiente_recupera_una_rampa_conocida():
-    """Una rampa de 0 a 3 sobre tiempo normalizado tiene pendiente 3."""
-    rampa = np.linspace(0.0, 3.0, 60).reshape(1, -1)
-    assert resumir_sensor(rampa)["pendiente"][0] == pytest.approx(3.0)
-    assert resumir_sensor(np.full((1, 60), 7.0))["pendiente"][0] == pytest.approx(0.0)
+def test_los_tramos_recuperan_un_perfil_conocido():
+    """Los tramos capturan CUANDO pasa cada cosa, que es donde vive el estado de la valvula."""
+    escalon = np.concatenate([np.zeros(30), np.ones(30)]).reshape(1, -1)
+    resumen = resumir_sensor(escalon, segmentos=6)
+    assert [round(float(resumen[f"t{i}"][0]), 3) for i in range(1, 7)] == [0, 0, 0, 1, 1, 1]
+    assert resumen["media"][0] == pytest.approx(0.5)
+
+    # El mismo escalon desplazado: misma media, tramos distintos. Eso es el retardo.
+    tarde = np.concatenate([np.zeros(40), np.ones(20)]).reshape(1, -1)
+    assert resumir_sensor(tarde, 6)["media"][0] != pytest.approx(resumen["media"][0])
+    assert [round(float(resumir_sensor(tarde, 6)[f"t{i}"][0]), 3)
+            for i in range(1, 7)] == [0, 0, 0, 0, 1, 1]
 
 
 def test_el_indicador_de_estabilidad_no_es_una_variable(tabla):
@@ -53,6 +64,16 @@ def test_el_indicador_de_estabilidad_no_es_una_variable(tabla):
     """
     assert "estable" not in columnas_sensor(tabla)
     assert "estable" not in columnas_aguja(tabla)
+
+
+def test_los_sensores_rapidos_llevan_mas_tramos(tabla):
+    """Los de 1 Hz solo tienen 60 lecturas por ciclo: seis tramos serian ruido."""
+    assert set(SENSORES_RAPIDOS) & set(SENSORES_LENTOS) == set()
+    assert len(SENSORES_RAPIDOS) + len(SENSORES_LENTOS) == len(SENSORES)
+    rapido = [c for c in tabla.columns if c.startswith("PS1_t")]
+    lento = [c for c in tabla.columns if c.startswith("TS1_t")]
+    assert len(rapido) == SEGMENTOS_RAPIDOS
+    assert len(lento) == SEGMENTOS_LENTOS
 
 
 def test_las_etiquetas_del_perfil_no_son_variables(tabla):

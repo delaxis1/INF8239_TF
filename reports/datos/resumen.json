@@ -3,12 +3,35 @@
   "ciclos_estables": 1449,
   "descartados_por_transitorio": 756,
   "sensores": 17,
+  "segmentos_rapidos": 6,
+  "segmentos_lentos": 3,
+  "sensores_rapidos": [
+    "PS1",
+    "PS2",
+    "PS3",
+    "PS4",
+    "PS5",
+    "PS6",
+    "EPS1",
+    "FS1",
+    "FS2"
+  ],
+  "sensores_lentos": [
+    "TS1",
+    "TS2",
+    "TS3",
+    "TS4",
+    "VS1",
+    "CE",
+    "CP",
+    "SE"
+  ],
   "sensores_virtuales": [
     "CE",
     "CP",
     "SE"
   ],
-  "columnas_sensor": 85,
+  "columnas_sensor": 112,
   "columnas_aguja": 17,
   "objetivo": "valvula",
   "normal": "valvula == 100",
