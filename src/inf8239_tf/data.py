@@ -53,6 +53,20 @@ COLUMNAS_PERFIL = ("refrigerador", "valvula", "fuga_bomba", "acumulador", "estab
 VALVULA_OPTIMA = 100
 VALVULA_NIVELES = {100: "optimo", 90: "retardo pequeno", 80: "retardo severo",
                    73: "cerca del fallo total"}
+ACUMULADOR_NIVELES = {130: "optimo", 115: "presion ligeramente reducida",
+                      100: "presion severamente reducida", 90: "cerca del fallo total"}
+
+# Los dos objetivos del trabajo. El refrigerador y la fuga de bomba quedan fuera: el
+# primero lo delata un solo sensor y el segundo, con el perfil temporal, también resulta
+# casi trivial. La válvula es el caso que demuestra la anomalía contextual; el acumulador
+# es el caso difícil, y la propia documentación del conjunto lo señala como el más complejo.
+OBJETIVOS: dict[str, dict] = {
+    "valvula": {"optimo": 100, "niveles": VALVULA_NIVELES,
+                "descripcion": "retardo de conmutacion de la valvula"},
+    "acumulador": {"optimo": 130, "niveles": ACUMULADOR_NIVELES,
+                   "descripcion": "presion del acumulador hidraulico"},
+}
+OBJETIVO_POR_DEFECTO = "valvula"
 
 
 def resumir_sensor(matriz: np.ndarray, segmentos: int) -> dict[str, np.ndarray]:
@@ -91,8 +105,23 @@ def construir_tabla(crudo: Path = CRUDO) -> pd.DataFrame:
     tabla.insert(0, "ciclo", np.arange(len(tabla)))
     for i, nombre in enumerate(COLUMNAS_PERFIL):
         tabla[nombre] = perfil[:, i]
-    tabla["anomalia"] = (tabla.valvula != VALVULA_OPTIMA).astype(int)
-    tabla["severidad"] = tabla.valvula.map(VALVULA_NIVELES)
+    return etiquetar(tabla, OBJETIVO_POR_DEFECTO)
+
+
+def etiquetar(tabla: pd.DataFrame, objetivo: str) -> pd.DataFrame:
+    """Añade `anomalia` y `severidad` para el componente elegido.
+
+    El mismo conjunto de ciclos sirve para los dos objetivos: lo único que cambia es qué
+    componente se considera el fallo y cuál es su estado óptimo.
+    """
+    if objetivo not in OBJETIVOS:
+        raise ValueError(f"Objetivo desconocido: {objetivo}. "
+                         f"Disponibles: {sorted(OBJETIVOS)}")
+    definicion = OBJETIVOS[objetivo]
+    tabla = tabla.copy()
+    tabla["objetivo"] = objetivo
+    tabla["anomalia"] = (tabla[objetivo] != definicion["optimo"]).astype(int)
+    tabla["severidad"] = tabla[objetivo].map(definicion["niveles"])
     return tabla
 
 
@@ -128,21 +157,25 @@ def validar_contrato(tabla: pd.DataFrame) -> None:
         raise ValueError("Hay valores ausentes en las columnas de sensor")
     if not set(tabla.anomalia.unique()) <= {0, 1}:
         raise ValueError("La etiqueta de anomalía debe ser binaria")
-    if not set(tabla.valvula.unique()) <= set(VALVULA_NIVELES):
-        raise ValueError(f"Niveles de válvula inesperados: {sorted(tabla.valvula.unique())}")
+    for objetivo, definicion in OBJETIVOS.items():
+        vistos = set(tabla[objetivo].unique())
+        if not vistos <= set(definicion["niveles"]):
+            raise ValueError(f"Niveles inesperados en {objetivo}: {sorted(vistos)}")
 
 
-def particion(tabla: pd.DataFrame, fraccion_prueba: float = 0.3, semilla: int = 42
-              ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Partición estratificada por nivel de válvula.
+def particion(tabla: pd.DataFrame, fraccion_prueba: float = 0.3, semilla: int = 42,
+              objetivo: str | None = None) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Partición estratificada por el nivel de degradación del objetivo.
 
     No es cronológica a propósito: el archivo está ordenado por estado del refrigerador,
     de modo que un corte temporal confundiría el régimen de refrigeración con el objetivo.
     """
     from sklearn.model_selection import train_test_split
 
+    columna = objetivo or (tabla.objetivo.iloc[0] if "objetivo" in tabla.columns
+                           else OBJETIVO_POR_DEFECTO)
     entrena, prueba = train_test_split(tabla, test_size=fraccion_prueba, random_state=semilla,
-                                       stratify=tabla.valvula)
+                                       stratify=tabla[columna])
     return entrena.reset_index(drop=True), prueba.reset_index(drop=True)
 
 

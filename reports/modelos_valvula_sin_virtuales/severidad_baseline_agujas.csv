@@ -1,4 +1,4 @@
-valvula_%,severidad,ciclos,detectados,tasa
+nivel,severidad,ciclos,detectados,tasa
 100,optimo,111,3,0.027
 90,retardo pequeno,108,11,0.1019
 80,retardo severo,108,8,0.0741

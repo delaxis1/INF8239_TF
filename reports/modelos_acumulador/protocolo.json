@@ -1,9 +1,10 @@
 {
+  "objetivo": "acumulador",
   "sensores_virtuales_incluidos": true,
   "variables": 112,
   "agujas": 17,
-  "ajuste": 172,
-  "validacion": 86,
+  "ajuste": 168,
+  "validacion": 84,
   "prueba": 435,
   "tasa_falsas_alarmas_objetivo": 0.05,
   "capacidad_por_turno": 20,
@@ -11,8 +12,8 @@
     "latente": 4,
     "oculta": 32,
     "beta": 1.0,
-    "mejor_epoca": 471,
-    "epocas_ejecutadas": 671,
+    "mejor_epoca": 551,
+    "epocas_ejecutadas": 751,
     "parametros": 7736
   }
 }

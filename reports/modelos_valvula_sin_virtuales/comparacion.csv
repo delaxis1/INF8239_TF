@@ -1,4 +1,4 @@
 alternativa,pr_auc,linea_de_azar,roc_auc,precision_en_20,recall,falsas_alarmas,marcados,umbral,ajuste_s,tamano_kb,parametros
 baseline_agujas,0.7975,0.7448,0.5493,1.0,0.1358,0.027,47,1.0107,0.0011,0.0,42
 mahalanobis,0.9973,0.7448,0.9932,1.0,1.0,0.027,327,8.7153,0.0036,37.89,4850
-vae,0.9949,0.7448,0.9869,1.0,0.6975,0.018,228,27.1542,5.7846,26.41,6761
+vae,0.9949,0.7448,0.9869,1.0,0.6975,0.018,228,27.1542,5.2825,26.41,6761

@@ -1,0 +1,19 @@
+{
+  "objetivo": "valvula",
+  "sensores_virtuales_incluidos": false,
+  "variables": 97,
+  "agujas": 14,
+  "ajuste": 172,
+  "validacion": 86,
+  "prueba": 435,
+  "tasa_falsas_alarmas_objetivo": 0.05,
+  "capacidad_por_turno": 20,
+  "vae": {
+    "latente": 4,
+    "oculta": 32,
+    "beta": 1.0,
+    "mejor_epoca": 187,
+    "epocas_ejecutadas": 387,
+    "parametros": 6761
+  }
+}

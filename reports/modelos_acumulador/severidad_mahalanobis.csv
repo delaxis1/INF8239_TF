@@ -1,0 +1,5 @@
+nivel,severidad,ciclos,detectados,tasa
+130,optimo,108,4,0.037
+115,presion ligeramente reducida,108,41,0.3796
+100,presion severamente reducida,108,43,0.3981
+90,cerca del fallo total,111,65,0.5856

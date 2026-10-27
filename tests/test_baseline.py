@@ -81,9 +81,22 @@ def test_precision_en_k_mira_solo_los_k_peores():
 
 def test_la_deteccion_por_severidad_cubre_todos_los_niveles():
     tabla = pd.DataFrame({
+        "objetivo": ["valvula"] * 4,
         "valvula": [100, 100, 90, 73],
         "severidad": ["optimo", "optimo", "retardo pequeno", "cerca del fallo total"],
     })
     resultado = deteccion_por_severidad(tabla, np.array([0.1, 0.2, 2.0, 3.0]), umbral=1.0)
-    assert list(resultado["valvula_%"]) == [100, 90, 73]
+    assert list(resultado["nivel"]) == [100, 90, 73]
+    assert list(resultado["tasa"]) == [0.0, 1.0, 1.0]
+
+
+def test_la_severidad_funciona_igual_con_el_otro_objetivo():
+    """El mismo código sirve para la válvula y para el acumulador."""
+    tabla = pd.DataFrame({
+        "objetivo": ["acumulador"] * 3,
+        "acumulador": [130, 115, 90],
+        "severidad": ["optimo", "presion ligeramente reducida", "cerca del fallo total"],
+    })
+    resultado = deteccion_por_severidad(tabla, np.array([0.1, 2.0, 3.0]), umbral=1.0)
+    assert list(resultado["nivel"]) == [130, 115, 90]
     assert list(resultado["tasa"]) == [0.0, 1.0, 1.0]

@@ -50,12 +50,13 @@ def deteccion_por_severidad(tabla: pd.DataFrame, puntuacion: np.ndarray,
 
     Es la tabla que responde la pregunta del trabajo: dónde empieza a ver el sistema.
     """
+    objetivo = tabla.objetivo.iloc[0] if "objetivo" in tabla.columns else "valvula"
     filas = []
-    for nivel in sorted(tabla.valvula.unique(), reverse=True):
-        mascara = (tabla.valvula == nivel).to_numpy()
+    for nivel in sorted(tabla[objetivo].unique(), reverse=True):
+        mascara = (tabla[objetivo] == nivel).to_numpy()
         detectados = int((puntuacion[mascara] > umbral).sum())
         filas.append({
-            "valvula_%": int(nivel),
+            "nivel": int(nivel),
             "severidad": tabla.loc[mascara, "severidad"].iloc[0],
             "ciclos": int(mascara.sum()),
             "detectados": detectados,

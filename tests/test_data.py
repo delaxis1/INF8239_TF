@@ -10,10 +10,11 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from inf8239_tf.data import (RAIZ, SEGMENTOS_LENTOS, SEGMENTOS_RAPIDOS, SENSORES,
+from inf8239_tf.data import (OBJETIVOS, RAIZ, SEGMENTOS_LENTOS, SEGMENTOS_RAPIDOS, SENSORES,
                              SENSORES_LENTOS, SENSORES_RAPIDOS, SENSORES_VIRTUALES,
                              VALVULA_NIVELES, VALVULA_OPTIMA, columnas_aguja,
-                             columnas_sensor, particion, resumir_sensor, solo_estables,
+                             columnas_sensor, etiquetar, particion, resumir_sensor,
+                             solo_estables,
                              solo_normales, validar_contrato)
 
 CICLOS = RAIZ / "data" / "ciclos.csv"
@@ -120,3 +121,28 @@ def test_solo_estables_no_pierde_ninguna_anomalia():
     filtrada = solo_estables(sintetica)
     assert len(filtrada) == 2
     assert filtrada.anomalia.sum() == sintetica.anomalia.sum()
+
+
+def test_los_dos_objetivos_se_etiquetan_desde_la_misma_tabla(tabla):
+    """Válvula y acumulador comparten ciclos: solo cambia qué se considera el fallo."""
+    for objetivo, definicion in OBJETIVOS.items():
+        etiquetada = etiquetar(tabla, objetivo)
+        assert etiquetada.objetivo.unique().tolist() == [objetivo]
+        assert (etiquetada.loc[etiquetada[objetivo] == definicion["optimo"],
+                               "anomalia"] == 0).all()
+        assert (etiquetada.loc[etiquetada[objetivo] != definicion["optimo"],
+                               "anomalia"] == 1).all()
+        assert etiquetada.severidad.notna().all()
+
+
+def test_un_objetivo_inexistente_se_rechaza(tabla):
+    with pytest.raises(ValueError, match="Objetivo desconocido"):
+        etiquetar(tabla, "turbina")
+
+
+def test_la_particion_estratifica_por_el_objetivo_elegido(tabla):
+    acumulador = etiquetar(tabla, "acumulador")
+    entrena, prueba = particion(acumulador, objetivo="acumulador")
+    for nivel in OBJETIVOS["acumulador"]["niveles"]:
+        esperado = (acumulador.acumulador == nivel).mean()
+        assert (prueba.acumulador == nivel).mean() == pytest.approx(esperado, abs=0.02)

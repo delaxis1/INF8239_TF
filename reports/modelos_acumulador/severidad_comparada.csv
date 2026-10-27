@@ -1,0 +1,5 @@
+nivel,severidad,ciclos,baseline_agujas,mahalanobis,vae
+130,optimo,108,0.037,0.037,0.037
+115,presion ligeramente reducida,108,0.3889,0.3796,0.2778
+100,presion severamente reducida,108,0.3056,0.3981,0.3148
+90,cerca del fallo total,111,0.3604,0.5856,0.2613

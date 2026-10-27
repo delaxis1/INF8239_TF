@@ -1,7 +1,8 @@
 {
-  "sensores_virtuales_incluidos": false,
-  "variables": 97,
-  "agujas": 14,
+  "objetivo": "valvula",
+  "sensores_virtuales_incluidos": true,
+  "variables": 112,
+  "agujas": 17,
   "ajuste": 172,
   "validacion": 86,
   "prueba": 435,
@@ -11,8 +12,8 @@
     "latente": 4,
     "oculta": 32,
     "beta": 1.0,
-    "mejor_epoca": 187,
-    "epocas_ejecutadas": 387,
-    "parametros": 6761
+    "mejor_epoca": 471,
+    "epocas_ejecutadas": 671,
+    "parametros": 7736
   }
 }
