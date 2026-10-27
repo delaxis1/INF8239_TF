@@ -1,0 +1,12 @@
+{
+  "objetivo": "valvula",
+  "razon_costo_fn_fa": 10.0,
+  "umbral_costo": 9.9503,
+  "umbral_capacidad": 55.5262,
+  "capacidad": 0.15,
+  "umbral_inspeccion": 55.5262,
+  "umbral_abstencion": 9.9503,
+  "validacion_total": 842,
+  "validacion_normales": 86,
+  "regla_abstencion_extra": "todo ciclo sin regimen estacionario se abstiene"
+}

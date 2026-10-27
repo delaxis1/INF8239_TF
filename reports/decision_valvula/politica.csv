@@ -1,0 +1,5 @@
+nivel,severidad,ciclos,normal,abstencion,inspeccionar
+100,optimo,111,0.973,0.027,0.0
+90,retardo pequeno,108,0.0,1.0,0.0
+80,retardo severo,108,0.0,0.9907,0.0093
+73,cerca del fallo total,108,0.0,0.3981,0.6019

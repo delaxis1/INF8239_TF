@@ -1,0 +1,12 @@
+{
+  "objetivo": "acumulador",
+  "razon_costo_fn_fa": 10.0,
+  "umbral_costo": 3.8117,
+  "umbral_capacidad": 27.8072,
+  "capacidad": 0.15,
+  "umbral_inspeccion": 27.8072,
+  "umbral_abstencion": 3.8117,
+  "validacion_total": 846,
+  "validacion_normales": 84,
+  "regla_abstencion_extra": "todo ciclo sin regimen estacionario se abstiene"
+}

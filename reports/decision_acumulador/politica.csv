@@ -1,0 +1,5 @@
+nivel,severidad,ciclos,normal,abstencion,inspeccionar
+130,optimo,108,0.2407,0.75,0.0093
+115,presion ligeramente reducida,108,0.0093,0.787,0.2037
+100,presion severamente reducida,108,0.0,0.8148,0.1852
+90,cerca del fallo total,111,0.0,0.7928,0.2072

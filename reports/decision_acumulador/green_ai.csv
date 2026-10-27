@@ -1,0 +1,4 @@
+alternativa,parametros,latencia_ms_por_ciclo,umbral,pr_auc,precision_de_lo_inspeccionado,recall,falsas_alarmas
+baseline_agujas,51,0.00503,1.4488,0.8504,0.9848,0.1988,0.0093
+mahalanobis,6440,0.00785,27.8072,0.9574,0.9848,0.1988,0.0093
+vae,7736,0.00398,307.8871,0.9121,0.9848,0.1988,0.0093
