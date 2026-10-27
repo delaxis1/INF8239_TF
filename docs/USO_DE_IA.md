@@ -11,16 +11,20 @@ línea.
 **Claude Opus 5 (Anthropic)**, mediante Claude Code, con acceso al proyecto local y al aula
 virtual para leer el mandato, la rúbrica y la ficha del Tema 39.
 
-## Prompts relevantes
+## Instrucciones relevantes
 
-| Prompt | Para qué se usó |
+Las instrucciones se recogen **resumidas en su contenido, no transcritas literalmente**.
+El orden es el real y cada una corresponde a un punto en que el trabajo cambió de rumbo.
+
+| Instrucción dada al asistente | Qué determinó |
 |---|---|
-| "me interesa la parte de Tema 39 · VAE para detección de anomalías" | Leer el mandato, la rúbrica y los criterios de aceptación |
-| "mantenimiento predictivo… rpm, temperaturas, vibraciones… un humano a simple vista solo se daría cuenta ya en rangos rojos" | **Mi planteamiento del problema**, que define toda la tesis del trabajo |
-| "podemos hacer en entornos industriales más controlado y más sensores" | Buscar y verificar conjuntos candidatos en UCI |
-| "olvídate del tiempo si tenemos que tomar 2 días se hace" | **Mi decisión** de aceptar el conjunto real, más costoso de preparar |
-| "dale con válvula" | **Mi decisión** del componente objetivo |
-| "dale, añade el acumulador" | **Mi decisión** de añadir el segundo caso |
+| Selección del Tema 39 y lectura del mandato, la rúbrica y los criterios de aceptación | Alcance y entregables |
+| **Planteamiento del problema:** detectar degradación de equipos a partir de la relación entre revoluciones, temperaturas y vibraciones, partiendo de que un operador solo advierte el fallo cuando una variable entra en rango rojo | **La tesis completa del trabajo.** Es mío y de aquí sale todo lo demás |
+| Preferencia por un entorno industrial más instrumentado y con más sensores | Búsqueda y verificación de conjuntos candidatos en UCI |
+| Instrucción de **anteponer la calidad del conjunto al tiempo de preparación**, aceptando dedicar dos días a la ingeniería de datos | **Mi decisión** de trabajar con datos reales en lugar de sintéticos |
+| Selección de la **válvula** como componente objetivo, sobre la evidencia univariante presentada | **Mi decisión** del objetivo principal |
+| Incorporación del **acumulador** como segundo caso, de dificultad mayor | **Mi decisión** de ampliar el alcance por encima del mínimo |
+| Decisión sobre la visibilidad del repositorio, tras discutir los riesgos | **Mi decisión** de publicarlo |
 
 ## Qué decidí yo
 

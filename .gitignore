@@ -10,3 +10,5 @@ reports/**/*.png
 herramientas/*.docx
 herramientas/*.pdf
 .streamlit/secrets.toml
+herramientas/*.docx
+herramientas/*.pdf
