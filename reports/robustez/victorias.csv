@@ -1,0 +1,4 @@
+objetivo,semillas,baseline_agujas,mahalanobis,vae
+acumulador,10,0,10,0
+fuga_bomba,10,0,10,0
+valvula,10,0,7,3

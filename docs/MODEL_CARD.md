@@ -97,9 +97,25 @@ casi rota. El modelo las ve todas desde el primer nivel.
 
 ## Por qué se descarta el VAE
 
-Pierde en los dos objetivos y en las dos ablaciones sin sensores virtuales: cuatro
-ejecuciones independientes. Se le dio convergencia con parada temprana hasta 3000 épocas,
-la misma representación, el mismo umbral y el mismo protocolo.
+**Medido con diez particiones sobre tres objetivos**, Mahalanobis gana 27 de 30
+comparaciones. Se le dio al VAE convergencia con parada temprana hasta 3000 épocas, la
+misma representación, el mismo umbral y el mismo protocolo.
+
+| Objetivo | Mahalanobis gana | VAE gana |
+|---|---|---|
+| Válvula | 7 de 10 | 3 de 10 |
+| Fuga de bomba | 10 de 10 | 0 |
+| Acumulador | 10 de 10 | 0 |
+
+**Matiz importante y declarado:** en la válvula los intervalos de confianza del PR-AUC se
+solapan (Mahalanobis [0.9870, 0.9961] frente a VAE [0.9863, 0.9918]), de modo que por esa
+métrica la diferencia no es distinguible del ruido. La medición con una sola partición
+—PR-AUC 0.9974 frente a 0.9966— **sobreestimaba la diferencia**.
+
+Lo que sí separa a los dos con holgura es el recall (0.9997 frente a 0.8768) y, sobre
+todo, **la estabilidad**: en la detección del retardo pequeño Mahalanobis obtiene
+0.999 ± 0.003 y el VAE 0.631 ± **0.348**. El VAE no detecta peor en promedio: detecta de
+forma inestable.
 
 La relación entre estos sensores resulta suficientemente **lineal** como para que un método
 de 1936 con 6440 parámetros y 4 milésimas de segundo de ajuste supere a una red de 7736
@@ -142,7 +158,9 @@ El umbral no se elige por conveniencia:
    no tiene este problema**: recall 1.000 en todos los regímenes.
 2. **La prevalencia del banco no es la de una planta.** 75 % de ciclos degradados porque es
    un experimento diseñado. Con la prevalencia real la precisión de la cola caería mucho.
-3. **Una sola partición**, sin intervalos de confianza ni repetición con otras semillas.
+3. **Diez particiones con intervalos de confianza**, pero todas sobre el mismo conjunto.
+   La variabilidad medida es la de la partición, no la de una máquina distinta ni la de
+   otro banco de pruebas.
 4. **172 ciclos de entrenamiento.** El VAE opera cerca del límite de datos que necesita, lo
    que debilita, aunque no invalida, la conclusión sobre él.
 5. **Marcar no es diagnosticar**, y una desviación no prueba causa.
