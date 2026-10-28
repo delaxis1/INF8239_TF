@@ -56,3 +56,27 @@ def test_las_variables_principales_vienen_ordenadas(tabla):
         aportes = [valor for _, valor in fila]
         assert len(fila) == 4
         assert aportes == sorted(aportes, reverse=True)
+
+
+def test_el_tablero_permite_puntuar_un_ciclo_fuera_de_la_cola():
+    """El mandato pide demostrar el flujo con una entrada no memorizada."""
+    at = AppTest.from_file(APP, default_timeout=240).run()
+    assert not at.exception
+    cuerpo = " ".join(s.value.lower() for s in at.subheader)
+    assert "procesar un ciclo cualquiera" in cuerpo
+    assert any("no se mostró antes" in c.value for c in at.caption)
+
+
+def test_el_caso_trabajado_no_dispara_ninguna_aguja():
+    """El ciclo que ilustra la tesis tiene que seguir siendo un caso honesto."""
+    import json
+    ruta = RAIZ / "reports" / "caso" / "caso.json"
+    if not ruta.exists():
+        pytest.skip("Ejecuta scripts/run_caso_y_figuras.py primero")
+    caso = json.loads(ruta.read_text(encoding="utf-8"))
+    assert caso["agujas_en_zona_roja"] == 0, (
+        "El caso del informe debe ser invisible para el panel de agujas")
+    assert caso["desviacion_peor_aguja"] < 1.0
+    assert caso["puntuacion"] > caso["umbral"]
+    assert caso["severidad"] == "retardo pequeno", (
+        "Debe ser del nivel mas leve, que es el que el operador no ve")

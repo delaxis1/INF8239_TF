@@ -153,6 +153,39 @@ st.markdown(
     f"en producción.")
 st.dataframe(auditoria, use_container_width=True, hide_index=True)
 
+st.subheader("Procesar un ciclo cualquiera")
+st.caption("La cola de arriba es el conjunto de prueba. Aquí se puede puntuar **cualquier "
+           "ciclo del banco**, incluidos los que no estaban en esa cola, para comprobar que "
+           "el flujo funciona sobre una entrada que no se mostró antes.")
+izq2, der2 = st.columns([1, 2])
+with izq2:
+    nuevo = st.number_input("Ciclo del banco", min_value=int(tabla.ciclo.min()),
+                            max_value=int(tabla.ciclo.max()),
+                            value=int(tabla[~tabla.ciclo.isin(prueba.ciclo)].ciclo.iloc[0]),
+                            step=1, help="Elige uno que no aparezca en la cola de arriba")
+fila_nueva = tabla[tabla.ciclo == nuevo]
+if fila_nueva.empty:
+    st.warning("Ese ciclo no está en el conjunto. Todos los ciclos del banco son estables; "
+               "los transitorios se descartaron antes de modelar.")
+else:
+    en_la_cola = bool(prueba.ciclo.eq(nuevo).any())
+    punt_nueva = maha.puntuar(fila_nueva)[0]
+    decision_nueva = politica.decidir(np.array([punt_nueva]),
+                                      fila_nueva.estable.to_numpy())[0]
+    with izq2:
+        st.metric("Puntuación", f"{punt_nueva:.2f}")
+        st.markdown(f"**Decisión:** :{'red' if decision_nueva == 'inspeccionar' else 'orange' if decision_nueva == 'abstencion' else 'green'}[{decision_nueva}]")
+        st.caption("Estaba en la cola de arriba" if en_la_cola
+                   else "**No estaba en la cola**: el detector nunca lo puntuó antes")
+    with der2:
+        st.write("**Variables que más explican la distancia:**")
+        st.dataframe(maha.contribuciones(fila_nueva).iloc[0].sort_values(ascending=False)
+                     .head(6).rename("aporte").to_frame(), use_container_width=True)
+        st.caption(f"Aguja más desviada: `{agujas.aguja_culpable(fila_nueva).iloc[0]}`, al "
+                   f"{agujas.desviaciones(fila_nueva).max(axis=1).iloc[0]:.0%} de su banda. "
+                   f"Si está por debajo del 100 % y el sistema marca el ciclo, es una "
+                   f"anomalía que el panel no habría visto.")
+
 st.subheader("Acción humana")
 st.info(
     "Revisar los ciclos de la cola en el orden propuesto, confirmar o descartar cada uno "

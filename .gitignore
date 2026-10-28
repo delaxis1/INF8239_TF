@@ -7,6 +7,7 @@ data/*.parquet
 models/*.joblib
 models/*.pt
 reports/**/*.png
+!reports/figuras/*.png
 herramientas/*.docx
 herramientas/*.pdf
 .streamlit/secrets.toml

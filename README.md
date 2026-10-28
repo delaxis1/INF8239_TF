@@ -71,6 +71,21 @@ borra exactamente esa información:
 
 Mismo modelo, mismos datos, mismo protocolo. De casi azar a casi perfecto.
 
+## Un caso: lo que el operador no habría visto
+
+Ciclo **1408**, válvula con retardo pequeño. El detector lo marca con 13.8 frente a un
+umbral de 9.3. **Ninguna de las 17 agujas está en zona roja**: la que más se acerca,
+, se queda al **36 %** de su límite.
+
+Lo que lo delata son las presiones y la potencia de refrigeración **en el primer sexto del
+ciclo**, que es exactamente donde se manifiesta un retardo de conmutación. Ninguna de esas
+lecturas, por separado, sale de lo normal. Es la combinación la que no existe en una
+máquina sana.
+
+Y no es un caso elegido con pinzas: **260 de los 324 ciclos degradados** del conjunto de
+prueba se detectan sin que ninguna aguja salga de su banda. El **80 %** de lo que el
+sistema encuentra es invisible para el panel.
+
 ## Detección temprana
 
 | Estado de la válvula | Panel de agujas | Mahalanobis |
@@ -168,7 +183,7 @@ INF8239_TF/
 │   ├── modelos.py                Mahalanobis y VAE
 │   ├── evaluacion.py             PR-AUC, umbral y severidad
 │   └── decision.py               costo, capacidad, abstención y auditoría por régimen
-├── tests/                        54 pruebas
+├── tests/                        56 pruebas
 └── reports/                      métricas y evidencia de cada ejecución
 ```
 
@@ -178,7 +193,7 @@ INF8239_TF/
 uv run pytest -q
 ```
 
-54 pruebas: contrato de datos, prevención de fuga, extracción temporal, baseline,
+56 pruebas: contrato de datos, prevención de fuga, extracción temporal, baseline,
 métricas, costo, abstención, auditoría por régimen, explicación por variable, arranque del
 tablero sin navegador y **consistencia de la documentación** — estas últimas leen las
 cifras de `reports/` y comprueban que son las que aparecen en este README y en el Model

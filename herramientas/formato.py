@@ -255,3 +255,12 @@ def fecha_larga(d: date) -> str:
     return f"{d.day} de {MESES[d.month - 1]} de {d.year}"
 
 
+
+
+def figura(doc, ruta, ancho_cm: float = 15.6) -> None:
+    """Inserta una figura centrada. Las genera scripts/run_caso_y_figuras.py."""
+    parrafo = doc.add_paragraph()
+    parrafo.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    parrafo.paragraph_format.space_before = Pt(4)
+    parrafo.paragraph_format.space_after = Pt(2)
+    parrafo.add_run().add_picture(str(ruta), width=Cm(ancho_cm))

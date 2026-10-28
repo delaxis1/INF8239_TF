@@ -25,13 +25,16 @@ from docx.shared import Cm, Pt, RGBColor
 
 from formato import (BASE, HEADER_FILL, MUTED, NOMBRE, REPORTES, add_field, add_hyperlink,
                      add_inline_markdown, bullet, caption, data_table, fecha_larga,
-                     heading, key_value_table, numbered, paragraph, remove_table_borders,
-                     set_cell_fill, subheading)
+                     figura, heading, key_value_table, numbered, paragraph,
+                     remove_table_borders, set_cell_fill, subheading)
 
 
 def leer() -> dict:
     """Todas las cifras del informe, desde los archivos que las produjeron."""
     datos = {"resumen": json.loads((REPORTES / "datos" / "resumen.json").read_text("utf-8"))}
+    datos["caso"] = json.loads((REPORTES / "caso" / "caso.json").read_text("utf-8"))
+    datos["agujas_caso"] = pd.read_csv(REPORTES / "caso" / "agujas.csv", index_col=0)
+    datos["figuras"] = REPORTES / "figuras"
     datos["robustez"] = {
         "resumen": pd.read_csv(REPORTES / "robustez" / "resumen.csv"),
         "victorias": pd.read_csv(REPORTES / "robustez" / "victorias.csv"),
@@ -224,6 +227,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
         ["Seis tramos temporales por sensor", "54", "0.996"],
         ["Doce tramos temporales", "108", "1.000"],
     ], [8.0, 3.0, 5.8], bold_rows=(1,))
+    figura(doc, ev["figuras"] / "representacion.png", 14.6)
     caption(doc, "Mismo modelo, mismos datos, mismo protocolo. Ninguna arquitectura "
                  "compensó una representación que borraba la señal, y este resultado llegó "
                  "corrigiendo un error propio: la primera extracción de características "
@@ -257,6 +261,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
               f"{r.mahalanobis:.3f}", f"{r.vae:.3f}"] for r in sev.itertuples()]
     data_table(doc, ["Estado de la válvula", "Ciclos", "Panel de agujas", "Mahalanobis",
                      "VAE"], filas, [5.6, 2.0, 3.4, 3.0, 3.0], bold_rows=(1,))
+    figura(doc, ev["figuras"] / "deteccion_por_severidad.png", 14.6)
     caption(doc, "Fracción de ciclos detectados en cada nivel, **al 5 % de falsas "
                  "alarmas y sin restricción de capacidad**. La primera fila son ciclos "
                  "sanos: ahí la cifra son falsas alarmas. La sección 8 añade la capacidad "
@@ -268,7 +273,53 @@ def build(ev: dict, repo_url: str | None) -> Path:
                    "sistema, y es lo que el trabajo se propuso medir.", size=10.5, after=3)
 
     # 7
-    heading(doc, "7. ¿Es real la diferencia, o fue suerte?")
+    heading(doc, "7. Un caso: lo que el operador no habría visto")
+    caso = ev["caso"]
+    paragraph(doc, f"La tabla anterior dice que el detector encuentra el 100 % de los "
+                   f"retardos pequeños. Esta sección muestra **uno**, para que se vea qué "
+                   f"significa. El caso se eligió con una regla declarada antes de mirarlo: "
+                   f"entre los ciclos del nivel más leve que el modelo marca y que **no "
+                   f"disparan ninguna aguja**, el de aguja más tranquila. Es decir, aquel "
+                   f"en el que el panel estaba más lejos de sospechar.", size=10.5, after=4)
+    key_value_table(doc, [
+        ("Ciclo", f"{caso['ciclo']} · válvula con **{caso['severidad']}**"),
+        ("Puntuación del detector", f"**{caso['puntuacion']}**, con el umbral en "
+                                    f"{caso['umbral']}"),
+        ("Agujas en zona roja", f"**{caso['agujas_en_zona_roja']}**. Ninguna"),
+        ("La que más se acercó", f"`{caso['peor_aguja']}`, al "
+                                 f"**{caso['desviacion_peor_aguja']:.0%}** de su límite"),
+    ])
+    subheading(doc, "Qué veía el operador")
+    ag = ev["agujas_caso"].head(5)
+    filas = [[str(i), f"{v:.3f}", "dentro de banda"] for i, v in
+             zip(ag.index, ag.iloc[:, 0])]
+    data_table(doc, ["Aguja", "Fracción de su banda usada", "Estado"], filas,
+               [6.2, 5.6, 4.8], align_right_from=1)
+    caption(doc, "Una fracción de 1.000 sería el borde de la zona roja. La peor de las 17 "
+                 "agujas se quedó muy por debajo, de modo que un panel de control no habría "
+                 "mostrado nada anómalo en este ciclo.")
+    subheading(doc, "Qué vio el detector")
+    filas = [[v["variable"], f"{v['aporte']:.1f}"]
+             for v in caso["variables_que_lo_explican"]]
+    data_table(doc, ["Variable", "Aporte a la distancia"], filas, [8.4, 8.2])
+    paragraph(doc, "El nombre indica sensor y tramo del ciclo: `PS2_t1` es la presión PS2 "
+                   "en el **primer sexto** de los 60 segundos. Las tres primeras variables "
+                   "son presiones y la potencia de refrigeración **al principio del ciclo**, "
+                   "que es exactamente donde se manifiesta un retardo de conmutación: la "
+                   "válvula tarda un poco más en abrir, la presión sube más tarde, y el "
+                   "promedio del ciclo apenas lo nota. Ninguna de esas lecturas, por "
+                   "separado, sale de lo normal. **Es la combinación la que no existe en "
+                   "una máquina sana.**", size=10.5, after=4)
+    paragraph(doc, f"Y este caso no es una excepción elegida con pinzas: "
+                   f"**{caso['degradados_marcados_sin_ninguna_aguja_en_rojo']} de los "
+                   f"{caso['degradados_totales']} ciclos degradados** del conjunto de "
+                   f"prueba se detectan sin que ninguna aguja salga de su banda. El "
+                   f"{caso['degradados_marcados_sin_ninguna_aguja_en_rojo'] / caso['degradados_totales']:.0%} "
+                   f"de lo que el sistema encuentra es invisible para el panel.",
+              size=10.5, after=3)
+
+    # 8
+    heading(doc, "8. ¿Es real la diferencia, o fue suerte?")
     rob = ev["robustez"]
     n_sem = len(rob["protocolo"]["semillas"])
     paragraph(doc, f"Una sola partición no distingue «Mahalanobis gana» de «Mahalanobis "
@@ -314,7 +365,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
               size=10.5, after=3)
 
     # 8
-    heading(doc, "8. Por qué el VAE no se queda con el puesto")
+    heading(doc, "9. Por qué el VAE no se queda con el puesto")
     for texto in (
         f"**Pierde 27 de 30 comparaciones** repetidas sobre los tres objetivos. Donde "
         f"más se ve es en el retardo pequeño de la válvula: detecta el "
@@ -337,7 +388,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
                    "no demostrar que la red gana.", size=10.5, after=3)
 
     # 8
-    heading(doc, "9. Umbral, costo y abstención")
+    heading(doc, "10. Umbral, costo y abstención")
     costo_v = valv["costo"]
     filas = [[f"{r.razon_fn_fa:g} : 1", f"{r.umbral:.3f}", str(int(r.marcados)),
               f"{r.recall:.3f}", f"{r.falsas_alarmas:.3f}"]
@@ -370,7 +421,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
                      "Inspeccionar"], filas, [5.6, 2.0, 3.0, 3.0, 3.4])
 
     # 9
-    heading(doc, "10. El límite que más importa")
+    heading(doc, "11. El límite que más importa")
     reg = acum["regimen"]
     filas = [[f"{int(r.refrigerador)} %", str(int(r.ciclos)), f"{r.recall:.3f}",
               f"{r.falsas_alarmas:.3f}"] for r in reg.itertuples()]
@@ -388,7 +439,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
                    "declara en la propia pantalla.", size=10, after=3)
 
     # 10
-    heading(doc, "11. Green AI")
+    heading(doc, "12. Green AI")
     verde = valv["verde"]
     etiquetas = {"baseline_agujas": "Alarma por aguja", "mahalanobis": "Mahalanobis",
                  "vae": "VAE"}
@@ -405,7 +456,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
                  "se satura.")
 
     # 11
-    heading(doc, "12. Lo que este trabajo no demuestra")
+    heading(doc, "13. Lo que este trabajo no demuestra")
     for texto in (
         f"**La prevalencia del banco no es la de una planta.** Aquí el {azar_v:.1%} de los "
         f"ciclos está degradado porque es un experimento diseñado. Con la prevalencia real "
@@ -425,7 +476,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
         bullet(doc, texto)
 
     # 12
-    heading(doc, "13. Conclusión accionable")
+    heading(doc, "14. Conclusión accionable")
     paragraph(doc, "**Desplegar el detector de la válvula como apoyo a la priorización, y "
                    "el del acumulador solo como vigilancia secundaria.** El de la válvula "
                    "detecta el 100 % de los retardos desde el nivel más leve, con 2.7 % de "
