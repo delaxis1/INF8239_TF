@@ -4,12 +4,9 @@ version = "0.1.0"
 description = "Trabajo final INF-8239 · Tema 39 · VAE para detección de anomalías en un banco hidráulico instrumentado"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-  "fairlearn>=0.12,<0.13",
-  "joblib>=1.5,<2",
   "matplotlib>=3.9,<4",
   "numpy>=2.0,<3",
   "pandas>=2.2,<3",
-  "pyyaml>=6,<7",
   "scikit-learn>=1.7,<2",
   "streamlit>=1.49,<2",
   "torch>=2.0,<3",
