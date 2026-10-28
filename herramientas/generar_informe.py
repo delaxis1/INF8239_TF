@@ -32,6 +32,12 @@ from formato import (BASE, HEADER_FILL, MUTED, NOMBRE, REPORTES, add_field, add_
 def leer() -> dict:
     """Todas las cifras del informe, desde los archivos que las produjeron."""
     datos = {"resumen": json.loads((REPORTES / "datos" / "resumen.json").read_text("utf-8"))}
+    datos["robustez"] = {
+        "resumen": pd.read_csv(REPORTES / "robustez" / "resumen.csv"),
+        "victorias": pd.read_csv(REPORTES / "robustez" / "victorias.csv"),
+        "severidad": pd.read_csv(REPORTES / "robustez" / "severidad_resumen.csv"),
+        "protocolo": json.loads((REPORTES / "robustez" / "protocolo.json").read_text("utf-8")),
+    }
     for objetivo in ("valvula", "acumulador"):
         datos[objetivo] = {
             "comparacion": pd.read_csv(REPORTES / f"modelos_{objetivo}" / "comparacion.csv"),
@@ -262,16 +268,61 @@ def build(ev: dict, repo_url: str | None) -> Path:
                    "sistema, y es lo que el trabajo se propuso medir.", size=10.5, after=3)
 
     # 7
-    heading(doc, "7. Por qué el VAE no se queda con el puesto")
+    heading(doc, "7. ¿Es real la diferencia, o fue suerte?")
+    rob = ev["robustez"]
+    n_sem = len(rob["protocolo"]["semillas"])
+    paragraph(doc, f"Una sola partición no distingue «Mahalanobis gana» de «Mahalanobis "
+                   f"ganó esta vez». El experimento se repitió con **{n_sem} particiones** "
+                   f"sobre los **tres objetivos**, cambiando solo qué ciclos caen en "
+                   f"entrenamiento y cuáles en prueba.", size=10.5, after=4)
+    vic = rob["victorias"]
+    filas = [[r.objetivo, f"{int(r.mahalanobis)} de {int(r.semillas)}",
+              f"{int(r.vae)} de {int(r.semillas)}", str(int(r.baseline_agujas))]
+             for r in vic.itertuples()]
+    data_table(doc, ["Objetivo", "Gana Mahalanobis", "Gana el VAE", "Gana la alarma"],
+               filas, [4.2, 4.4, 4.2, 4.0])
+    caption(doc, "Alternativa con mayor PR-AUC en cada repetición. La alarma por aguja no "
+                 "gana ninguna de las 30.")
+    res = rob["resumen"]
+    v = res[res.objetivo == "valvula"].set_index("alternativa")
+    paragraph(doc, f"**La parte incómoda.** En la válvula los intervalos de confianza del "
+                   f"PR-AUC **se solapan**: Mahalanobis "
+                   f"{v.loc['mahalanobis', 'pr_auc_ic95']} frente a VAE "
+                   f"{v.loc['vae', 'pr_auc_ic95']}. Por esa métrica la diferencia **no es "
+                   f"distinguible del ruido**. Medida una sola vez parecía una victoria; "
+                   f"medida {n_sem} veces, no lo es.", size=10.5, after=4)
+    sev_rob = rob["severidad"]
+    sv = sev_rob[(sev_rob.objetivo == "valvula")
+                 & (sev_rob.severidad == "retardo pequeno")]
+    sv = sv.set_index("alternativa")
+    filas = [["Mahalanobis", f"{v.loc['mahalanobis', 'recall_media']:.4f}",
+              v.loc["mahalanobis", "recall_ic95"],
+              f"{sv.loc['mahalanobis', 'mean']:.3f} ± {sv.loc['mahalanobis', 'std']:.3f}"],
+             ["VAE", f"{v.loc['vae', 'recall_media']:.4f}", v.loc["vae", "recall_ic95"],
+              f"{sv.loc['vae', 'mean']:.3f} ± {sv.loc['vae', 'std']:.3f}"],
+             ["Alarma por aguja", f"{v.loc['baseline_agujas', 'recall_media']:.4f}",
+              v.loc["baseline_agujas", "recall_ic95"], "—"]]
+    data_table(doc, ["Válvula", "Recall medio", "IC 95 %",
+                     "Detección del retardo pequeño"], filas, [3.6, 3.0, 4.6, 5.6],
+               bold_rows=(0,))
+    paragraph(doc, "Esa desviación de **0.348** es el hallazgo: el VAE no detecta peor en "
+                   "promedio, **detecta de forma inestable**. En unas particiones ve el "
+                   "retardo pequeño y en otras casi no, mientras Mahalanobis tiene una "
+                   "desviación de 0.003. El argumento correcto no es «Mahalanobis tiene "
+                   "mejor PR-AUC» —que en la válvula no se sostiene— sino **«Mahalanobis "
+                   "es estable y el VAE no»**, que sí se sostiene en los tres objetivos.",
+              size=10.5, after=3)
+
+    # 8
+    heading(doc, "8. Por qué el VAE no se queda con el puesto")
     for texto in (
-        f"**Pierde en los dos objetivos.** En la válvula detecta el "
-        f"{sev.loc[sev.severidad.str.contains('pequeno'), 'vae'].iloc[0]:.1%} de los "
-        f"retardos pequeños frente al "
-        f"{sev.loc[sev.severidad.str.contains('pequeno'), 'mahalanobis'].iloc[0]:.0%} de "
-        f"Mahalanobis. En el acumulador, recall {vae_a.recall:.3f} frente a "
-        f"{maha_a.recall:.3f}.",
-        "**Pierde también en las dos ablaciones** sin sensores virtuales: cuatro "
-        "ejecuciones independientes con el mismo resultado.",
+        f"**Pierde 27 de 30 comparaciones** repetidas sobre los tres objetivos. Donde "
+        f"más se ve es en el retardo pequeño de la válvula: detecta el "
+        f"{sv.loc['vae', 'mean']:.1%} frente al {sv.loc['mahalanobis', 'mean']:.0%} de "
+        f"Mahalanobis, y con una desviación de {sv.loc['vae', 'std']:.3f} frente a "
+        f"{sv.loc['mahalanobis', 'std']:.3f}.",
+        "**Pierde también en las dos ablaciones** sin sensores virtuales, de modo que el "
+        "resultado no depende de las señales calculadas en lugar de medidas.",
         f"**Se le dio una segunda oportunidad.** La primera ejecución agotó las épocas sin "
         f"converger; se repitió con parada temprana hasta 3000 y mejoró de 0.333 a 0.611 "
         f"en el nivel leve. La conclusión se escribió después de eso.",
@@ -286,7 +337,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
                    "no demostrar que la red gana.", size=10.5, after=3)
 
     # 8
-    heading(doc, "8. Umbral, costo y abstención")
+    heading(doc, "9. Umbral, costo y abstención")
     costo_v = valv["costo"]
     filas = [[f"{r.razon_fn_fa:g} : 1", f"{r.umbral:.3f}", str(int(r.marcados)),
               f"{r.recall:.3f}", f"{r.falsas_alarmas:.3f}"]
@@ -319,7 +370,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
                      "Inspeccionar"], filas, [5.6, 2.0, 3.0, 3.0, 3.4])
 
     # 9
-    heading(doc, "9. El límite que más importa")
+    heading(doc, "10. El límite que más importa")
     reg = acum["regimen"]
     filas = [[f"{int(r.refrigerador)} %", str(int(r.ciclos)), f"{r.recall:.3f}",
               f"{r.falsas_alarmas:.3f}"] for r in reg.itertuples()]
@@ -337,7 +388,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
                    "declara en la propia pantalla.", size=10, after=3)
 
     # 10
-    heading(doc, "10. Green AI")
+    heading(doc, "11. Green AI")
     verde = valv["verde"]
     etiquetas = {"baseline_agujas": "Alarma por aguja", "mahalanobis": "Mahalanobis",
                  "vae": "VAE"}
@@ -354,14 +405,15 @@ def build(ev: dict, repo_url: str | None) -> Path:
                  "se satura.")
 
     # 11
-    heading(doc, "11. Lo que este trabajo no demuestra")
+    heading(doc, "12. Lo que este trabajo no demuestra")
     for texto in (
         f"**La prevalencia del banco no es la de una planta.** Aquí el {azar_v:.1%} de los "
         f"ciclos está degradado porque es un experimento diseñado. Con la prevalencia real "
         f"la precisión de la cola caería mucho, y por eso la precisión a capacidad fija no "
         f"se usa como argumento principal.",
-        "**Una sola partición**, sin intervalos de confianza ni repetición con otras "
-        "semillas.",
+        f"**La variabilidad medida es la de la partición**, no la de otra máquina ni la "
+        f"de otro banco de pruebas. Diez repeticiones dicen que el resultado es estable "
+        f"dentro de este conjunto, no que se traslade a otro.",
         f"**{part['normales_entrenamiento']} ciclos normales de entrenamiento.** El VAE "
         f"opera cerca del límite de datos que necesita, lo que debilita —aunque no "
         f"invalida— la conclusión sobre él.",
@@ -373,7 +425,7 @@ def build(ev: dict, repo_url: str | None) -> Path:
         bullet(doc, texto)
 
     # 12
-    heading(doc, "12. Conclusión accionable")
+    heading(doc, "13. Conclusión accionable")
     paragraph(doc, "**Desplegar el detector de la válvula como apoyo a la priorización, y "
                    "el del acumulador solo como vigilancia secundaria.** El de la válvula "
                    "detecta el 100 % de los retardos desde el nivel más leve, con 2.7 % de "

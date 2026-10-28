@@ -1,0 +1,331 @@
+nivel,severidad,ciclos,detectados,tasa,objetivo,semilla,alternativa
+100,optimo,111,2,0.018,valvula,42,baseline_agujas
+90,retardo pequeno,108,9,0.0833,valvula,42,baseline_agujas
+80,retardo severo,108,10,0.0926,valvula,42,baseline_agujas
+73,cerca del fallo total,108,27,0.25,valvula,42,baseline_agujas
+100,optimo,111,3,0.027,valvula,42,mahalanobis
+90,retardo pequeno,108,108,1.0,valvula,42,mahalanobis
+80,retardo severo,108,108,1.0,valvula,42,mahalanobis
+73,cerca del fallo total,108,108,1.0,valvula,42,mahalanobis
+100,optimo,111,3,0.027,valvula,42,vae
+90,retardo pequeno,108,66,0.6111,valvula,42,vae
+80,retardo severo,108,108,1.0,valvula,42,vae
+73,cerca del fallo total,108,108,1.0,valvula,42,vae
+100,optimo,111,12,0.1081,valvula,43,baseline_agujas
+90,retardo pequeno,108,10,0.0926,valvula,43,baseline_agujas
+80,retardo severo,108,10,0.0926,valvula,43,baseline_agujas
+73,cerca del fallo total,108,21,0.1944,valvula,43,baseline_agujas
+100,optimo,111,11,0.0991,valvula,43,mahalanobis
+90,retardo pequeno,108,108,1.0,valvula,43,mahalanobis
+80,retardo severo,108,108,1.0,valvula,43,mahalanobis
+73,cerca del fallo total,108,108,1.0,valvula,43,mahalanobis
+100,optimo,111,10,0.0901,valvula,43,vae
+90,retardo pequeno,108,92,0.8519,valvula,43,vae
+80,retardo severo,108,108,1.0,valvula,43,vae
+73,cerca del fallo total,108,108,1.0,valvula,43,vae
+100,optimo,111,3,0.027,valvula,44,baseline_agujas
+90,retardo pequeno,108,8,0.0741,valvula,44,baseline_agujas
+80,retardo severo,108,7,0.0648,valvula,44,baseline_agujas
+73,cerca del fallo total,108,18,0.1667,valvula,44,baseline_agujas
+100,optimo,111,13,0.1171,valvula,44,mahalanobis
+90,retardo pequeno,108,108,1.0,valvula,44,mahalanobis
+80,retardo severo,108,108,1.0,valvula,44,mahalanobis
+73,cerca del fallo total,108,108,1.0,valvula,44,mahalanobis
+100,optimo,111,12,0.1081,valvula,44,vae
+90,retardo pequeno,108,102,0.9444,valvula,44,vae
+80,retardo severo,108,108,1.0,valvula,44,vae
+73,cerca del fallo total,108,108,1.0,valvula,44,vae
+100,optimo,111,5,0.045,valvula,45,baseline_agujas
+90,retardo pequeno,108,8,0.0741,valvula,45,baseline_agujas
+80,retardo severo,108,6,0.0556,valvula,45,baseline_agujas
+73,cerca del fallo total,108,17,0.1574,valvula,45,baseline_agujas
+100,optimo,111,10,0.0901,valvula,45,mahalanobis
+90,retardo pequeno,108,108,1.0,valvula,45,mahalanobis
+80,retardo severo,108,108,1.0,valvula,45,mahalanobis
+73,cerca del fallo total,108,108,1.0,valvula,45,mahalanobis
+100,optimo,111,10,0.0901,valvula,45,vae
+90,retardo pequeno,108,93,0.8611,valvula,45,vae
+80,retardo severo,108,108,1.0,valvula,45,vae
+73,cerca del fallo total,108,108,1.0,valvula,45,vae
+100,optimo,111,7,0.0631,valvula,46,baseline_agujas
+90,retardo pequeno,108,9,0.0833,valvula,46,baseline_agujas
+80,retardo severo,108,9,0.0833,valvula,46,baseline_agujas
+73,cerca del fallo total,108,15,0.1389,valvula,46,baseline_agujas
+100,optimo,111,6,0.0541,valvula,46,mahalanobis
+90,retardo pequeno,108,108,1.0,valvula,46,mahalanobis
+80,retardo severo,108,108,1.0,valvula,46,mahalanobis
+73,cerca del fallo total,108,108,1.0,valvula,46,mahalanobis
+100,optimo,111,5,0.045,valvula,46,vae
+90,retardo pequeno,108,95,0.8796,valvula,46,vae
+80,retardo severo,108,108,1.0,valvula,46,vae
+73,cerca del fallo total,108,108,1.0,valvula,46,vae
+100,optimo,111,2,0.018,valvula,47,baseline_agujas
+90,retardo pequeno,108,3,0.0278,valvula,47,baseline_agujas
+80,retardo severo,108,8,0.0741,valvula,47,baseline_agujas
+73,cerca del fallo total,108,18,0.1667,valvula,47,baseline_agujas
+100,optimo,111,6,0.0541,valvula,47,mahalanobis
+90,retardo pequeno,108,108,1.0,valvula,47,mahalanobis
+80,retardo severo,108,108,1.0,valvula,47,mahalanobis
+73,cerca del fallo total,108,108,1.0,valvula,47,mahalanobis
+100,optimo,111,7,0.0631,valvula,47,vae
+90,retardo pequeno,108,39,0.3611,valvula,47,vae
+80,retardo severo,108,108,1.0,valvula,47,vae
+73,cerca del fallo total,108,108,1.0,valvula,47,vae
+100,optimo,111,5,0.045,valvula,48,baseline_agujas
+90,retardo pequeno,108,9,0.0833,valvula,48,baseline_agujas
+80,retardo severo,108,11,0.1019,valvula,48,baseline_agujas
+73,cerca del fallo total,108,20,0.1852,valvula,48,baseline_agujas
+100,optimo,111,9,0.0811,valvula,48,mahalanobis
+90,retardo pequeno,108,108,1.0,valvula,48,mahalanobis
+80,retardo severo,108,108,1.0,valvula,48,mahalanobis
+73,cerca del fallo total,108,108,1.0,valvula,48,mahalanobis
+100,optimo,111,8,0.0721,valvula,48,vae
+90,retardo pequeno,108,13,0.1204,valvula,48,vae
+80,retardo severo,108,108,1.0,valvula,48,vae
+73,cerca del fallo total,108,108,1.0,valvula,48,vae
+100,optimo,111,11,0.0991,valvula,49,baseline_agujas
+90,retardo pequeno,108,6,0.0556,valvula,49,baseline_agujas
+80,retardo severo,108,12,0.1111,valvula,49,baseline_agujas
+73,cerca del fallo total,108,16,0.1481,valvula,49,baseline_agujas
+100,optimo,111,7,0.0631,valvula,49,mahalanobis
+90,retardo pequeno,108,107,0.9907,valvula,49,mahalanobis
+80,retardo severo,108,108,1.0,valvula,49,mahalanobis
+73,cerca del fallo total,108,108,1.0,valvula,49,mahalanobis
+100,optimo,111,6,0.0541,valvula,49,vae
+90,retardo pequeno,108,2,0.0185,valvula,49,vae
+80,retardo severo,108,108,1.0,valvula,49,vae
+73,cerca del fallo total,108,108,1.0,valvula,49,vae
+100,optimo,111,9,0.0811,valvula,50,baseline_agujas
+90,retardo pequeno,108,10,0.0926,valvula,50,baseline_agujas
+80,retardo severo,108,13,0.1204,valvula,50,baseline_agujas
+73,cerca del fallo total,108,28,0.2593,valvula,50,baseline_agujas
+100,optimo,111,15,0.1351,valvula,50,mahalanobis
+90,retardo pequeno,108,108,1.0,valvula,50,mahalanobis
+80,retardo severo,108,108,1.0,valvula,50,mahalanobis
+73,cerca del fallo total,108,108,1.0,valvula,50,mahalanobis
+100,optimo,111,13,0.1171,valvula,50,vae
+90,retardo pequeno,108,105,0.9722,valvula,50,vae
+80,retardo severo,108,108,1.0,valvula,50,vae
+73,cerca del fallo total,108,108,1.0,valvula,50,vae
+100,optimo,111,8,0.0721,valvula,51,baseline_agujas
+90,retardo pequeno,108,11,0.1019,valvula,51,baseline_agujas
+80,retardo severo,108,11,0.1019,valvula,51,baseline_agujas
+73,cerca del fallo total,108,19,0.1759,valvula,51,baseline_agujas
+100,optimo,111,6,0.0541,valvula,51,mahalanobis
+90,retardo pequeno,108,108,1.0,valvula,51,mahalanobis
+80,retardo severo,108,108,1.0,valvula,51,mahalanobis
+73,cerca del fallo total,108,108,1.0,valvula,51,mahalanobis
+100,optimo,111,7,0.0631,valvula,51,vae
+90,retardo pequeno,108,74,0.6852,valvula,51,vae
+80,retardo severo,108,108,1.0,valvula,51,vae
+73,cerca del fallo total,108,108,1.0,valvula,51,vae
+130,optimo,108,4,0.037,acumulador,42,baseline_agujas
+115,presion ligeramente reducida,108,42,0.3889,acumulador,42,baseline_agujas
+100,presion severamente reducida,108,33,0.3056,acumulador,42,baseline_agujas
+90,cerca del fallo total,111,40,0.3604,acumulador,42,baseline_agujas
+130,optimo,108,4,0.037,acumulador,42,mahalanobis
+115,presion ligeramente reducida,108,41,0.3796,acumulador,42,mahalanobis
+100,presion severamente reducida,108,43,0.3981,acumulador,42,mahalanobis
+90,cerca del fallo total,111,65,0.5856,acumulador,42,mahalanobis
+130,optimo,108,4,0.037,acumulador,42,vae
+115,presion ligeramente reducida,108,30,0.2778,acumulador,42,vae
+100,presion severamente reducida,108,34,0.3148,acumulador,42,vae
+90,cerca del fallo total,111,29,0.2613,acumulador,42,vae
+130,optimo,108,4,0.037,acumulador,43,baseline_agujas
+115,presion ligeramente reducida,108,37,0.3426,acumulador,43,baseline_agujas
+100,presion severamente reducida,108,41,0.3796,acumulador,43,baseline_agujas
+90,cerca del fallo total,111,37,0.3333,acumulador,43,baseline_agujas
+130,optimo,108,4,0.037,acumulador,43,mahalanobis
+115,presion ligeramente reducida,108,44,0.4074,acumulador,43,mahalanobis
+100,presion severamente reducida,108,64,0.5926,acumulador,43,mahalanobis
+90,cerca del fallo total,111,81,0.7297,acumulador,43,mahalanobis
+130,optimo,108,4,0.037,acumulador,43,vae
+115,presion ligeramente reducida,108,42,0.3889,acumulador,43,vae
+100,presion severamente reducida,108,45,0.4167,acumulador,43,vae
+90,cerca del fallo total,111,34,0.3063,acumulador,43,vae
+130,optimo,108,7,0.0648,acumulador,44,baseline_agujas
+115,presion ligeramente reducida,108,40,0.3704,acumulador,44,baseline_agujas
+100,presion severamente reducida,108,33,0.3056,acumulador,44,baseline_agujas
+90,cerca del fallo total,111,50,0.4505,acumulador,44,baseline_agujas
+130,optimo,108,3,0.0278,acumulador,44,mahalanobis
+115,presion ligeramente reducida,108,47,0.4352,acumulador,44,mahalanobis
+100,presion severamente reducida,108,64,0.5926,acumulador,44,mahalanobis
+90,cerca del fallo total,111,94,0.8468,acumulador,44,mahalanobis
+130,optimo,108,12,0.1111,acumulador,44,vae
+115,presion ligeramente reducida,108,53,0.4907,acumulador,44,vae
+100,presion severamente reducida,108,60,0.5556,acumulador,44,vae
+90,cerca del fallo total,111,63,0.5676,acumulador,44,vae
+130,optimo,108,4,0.037,acumulador,45,baseline_agujas
+115,presion ligeramente reducida,108,39,0.3611,acumulador,45,baseline_agujas
+100,presion severamente reducida,108,33,0.3056,acumulador,45,baseline_agujas
+90,cerca del fallo total,111,46,0.4144,acumulador,45,baseline_agujas
+130,optimo,108,5,0.0463,acumulador,45,mahalanobis
+115,presion ligeramente reducida,108,51,0.4722,acumulador,45,mahalanobis
+100,presion severamente reducida,108,73,0.6759,acumulador,45,mahalanobis
+90,cerca del fallo total,111,109,0.982,acumulador,45,mahalanobis
+130,optimo,108,10,0.0926,acumulador,45,vae
+115,presion ligeramente reducida,108,44,0.4074,acumulador,45,vae
+100,presion severamente reducida,108,40,0.3704,acumulador,45,vae
+90,cerca del fallo total,111,51,0.4595,acumulador,45,vae
+130,optimo,108,7,0.0648,acumulador,46,baseline_agujas
+115,presion ligeramente reducida,108,33,0.3056,acumulador,46,baseline_agujas
+100,presion severamente reducida,108,35,0.3241,acumulador,46,baseline_agujas
+90,cerca del fallo total,111,42,0.3784,acumulador,46,baseline_agujas
+130,optimo,108,6,0.0556,acumulador,46,mahalanobis
+115,presion ligeramente reducida,108,42,0.3889,acumulador,46,mahalanobis
+100,presion severamente reducida,108,42,0.3889,acumulador,46,mahalanobis
+90,cerca del fallo total,111,47,0.4234,acumulador,46,mahalanobis
+130,optimo,108,6,0.0556,acumulador,46,vae
+115,presion ligeramente reducida,108,35,0.3241,acumulador,46,vae
+100,presion severamente reducida,108,43,0.3981,acumulador,46,vae
+90,cerca del fallo total,111,35,0.3153,acumulador,46,vae
+130,optimo,108,5,0.0463,acumulador,47,baseline_agujas
+115,presion ligeramente reducida,108,40,0.3704,acumulador,47,baseline_agujas
+100,presion severamente reducida,108,45,0.4167,acumulador,47,baseline_agujas
+90,cerca del fallo total,111,34,0.3063,acumulador,47,baseline_agujas
+130,optimo,108,9,0.0833,acumulador,47,mahalanobis
+115,presion ligeramente reducida,108,47,0.4352,acumulador,47,mahalanobis
+100,presion severamente reducida,108,73,0.6759,acumulador,47,mahalanobis
+90,cerca del fallo total,111,87,0.7838,acumulador,47,mahalanobis
+130,optimo,108,8,0.0741,acumulador,47,vae
+115,presion ligeramente reducida,108,52,0.4815,acumulador,47,vae
+100,presion severamente reducida,108,77,0.713,acumulador,47,vae
+90,cerca del fallo total,111,73,0.6577,acumulador,47,vae
+130,optimo,108,3,0.0278,acumulador,48,baseline_agujas
+115,presion ligeramente reducida,108,41,0.3796,acumulador,48,baseline_agujas
+100,presion severamente reducida,108,37,0.3426,acumulador,48,baseline_agujas
+90,cerca del fallo total,111,45,0.4054,acumulador,48,baseline_agujas
+130,optimo,108,6,0.0556,acumulador,48,mahalanobis
+115,presion ligeramente reducida,108,49,0.4537,acumulador,48,mahalanobis
+100,presion severamente reducida,108,74,0.6852,acumulador,48,mahalanobis
+90,cerca del fallo total,111,102,0.9189,acumulador,48,mahalanobis
+130,optimo,108,3,0.0278,acumulador,48,vae
+115,presion ligeramente reducida,108,46,0.4259,acumulador,48,vae
+100,presion severamente reducida,108,47,0.4352,acumulador,48,vae
+90,cerca del fallo total,111,51,0.4595,acumulador,48,vae
+130,optimo,108,2,0.0185,acumulador,49,baseline_agujas
+115,presion ligeramente reducida,108,41,0.3796,acumulador,49,baseline_agujas
+100,presion severamente reducida,108,35,0.3241,acumulador,49,baseline_agujas
+90,cerca del fallo total,111,30,0.2703,acumulador,49,baseline_agujas
+130,optimo,108,1,0.0093,acumulador,49,mahalanobis
+115,presion ligeramente reducida,108,31,0.287,acumulador,49,mahalanobis
+100,presion severamente reducida,108,29,0.2685,acumulador,49,mahalanobis
+90,cerca del fallo total,111,24,0.2162,acumulador,49,mahalanobis
+130,optimo,108,1,0.0093,acumulador,49,vae
+115,presion ligeramente reducida,108,34,0.3148,acumulador,49,vae
+100,presion severamente reducida,108,33,0.3056,acumulador,49,vae
+90,cerca del fallo total,111,27,0.2432,acumulador,49,vae
+130,optimo,108,14,0.1296,acumulador,50,baseline_agujas
+115,presion ligeramente reducida,108,38,0.3519,acumulador,50,baseline_agujas
+100,presion severamente reducida,108,34,0.3148,acumulador,50,baseline_agujas
+90,cerca del fallo total,111,59,0.5315,acumulador,50,baseline_agujas
+130,optimo,108,16,0.1481,acumulador,50,mahalanobis
+115,presion ligeramente reducida,108,67,0.6204,acumulador,50,mahalanobis
+100,presion severamente reducida,108,88,0.8148,acumulador,50,mahalanobis
+90,cerca del fallo total,111,111,1.0,acumulador,50,mahalanobis
+130,optimo,108,13,0.1204,acumulador,50,vae
+115,presion ligeramente reducida,108,44,0.4074,acumulador,50,vae
+100,presion severamente reducida,108,51,0.4722,acumulador,50,vae
+90,cerca del fallo total,111,52,0.4685,acumulador,50,vae
+130,optimo,108,9,0.0833,acumulador,51,baseline_agujas
+115,presion ligeramente reducida,108,42,0.3889,acumulador,51,baseline_agujas
+100,presion severamente reducida,108,39,0.3611,acumulador,51,baseline_agujas
+90,cerca del fallo total,111,43,0.3874,acumulador,51,baseline_agujas
+130,optimo,108,10,0.0926,acumulador,51,mahalanobis
+115,presion ligeramente reducida,108,53,0.4907,acumulador,51,mahalanobis
+100,presion severamente reducida,108,73,0.6759,acumulador,51,mahalanobis
+90,cerca del fallo total,111,94,0.8468,acumulador,51,mahalanobis
+130,optimo,108,14,0.1296,acumulador,51,vae
+115,presion ligeramente reducida,108,53,0.4907,acumulador,51,vae
+100,presion severamente reducida,108,62,0.5741,acumulador,51,vae
+90,cerca del fallo total,111,62,0.5586,acumulador,51,vae
+2,fuga severa,144,19,0.1319,fuga_bomba,42,baseline_agujas
+1,fuga debil,144,20,0.1389,fuga_bomba,42,baseline_agujas
+0,sin fuga,147,12,0.0816,fuga_bomba,42,baseline_agujas
+2,fuga severa,144,144,1.0,fuga_bomba,42,mahalanobis
+1,fuga debil,144,144,1.0,fuga_bomba,42,mahalanobis
+0,sin fuga,147,4,0.0272,fuga_bomba,42,mahalanobis
+2,fuga severa,144,144,1.0,fuga_bomba,42,vae
+1,fuga debil,144,121,0.8403,fuga_bomba,42,vae
+0,sin fuga,147,6,0.0408,fuga_bomba,42,vae
+2,fuga severa,144,22,0.1528,fuga_bomba,43,baseline_agujas
+1,fuga debil,144,25,0.1736,fuga_bomba,43,baseline_agujas
+0,sin fuga,147,10,0.068,fuga_bomba,43,baseline_agujas
+2,fuga severa,144,144,1.0,fuga_bomba,43,mahalanobis
+1,fuga debil,144,144,1.0,fuga_bomba,43,mahalanobis
+0,sin fuga,147,12,0.0816,fuga_bomba,43,mahalanobis
+2,fuga severa,144,144,1.0,fuga_bomba,43,vae
+1,fuga debil,144,142,0.9861,fuga_bomba,43,vae
+0,sin fuga,147,13,0.0884,fuga_bomba,43,vae
+2,fuga severa,144,58,0.4028,fuga_bomba,44,baseline_agujas
+1,fuga debil,144,42,0.2917,fuga_bomba,44,baseline_agujas
+0,sin fuga,147,19,0.1293,fuga_bomba,44,baseline_agujas
+2,fuga severa,144,144,1.0,fuga_bomba,44,mahalanobis
+1,fuga debil,144,144,1.0,fuga_bomba,44,mahalanobis
+0,sin fuga,147,4,0.0272,fuga_bomba,44,mahalanobis
+2,fuga severa,144,144,1.0,fuga_bomba,44,vae
+1,fuga debil,144,113,0.7847,fuga_bomba,44,vae
+0,sin fuga,147,7,0.0476,fuga_bomba,44,vae
+2,fuga severa,144,45,0.3125,fuga_bomba,45,baseline_agujas
+1,fuga debil,144,36,0.25,fuga_bomba,45,baseline_agujas
+0,sin fuga,147,7,0.0476,fuga_bomba,45,baseline_agujas
+2,fuga severa,144,144,1.0,fuga_bomba,45,mahalanobis
+1,fuga debil,144,144,1.0,fuga_bomba,45,mahalanobis
+0,sin fuga,147,15,0.102,fuga_bomba,45,mahalanobis
+2,fuga severa,144,144,1.0,fuga_bomba,45,vae
+1,fuga debil,144,143,0.9931,fuga_bomba,45,vae
+0,sin fuga,147,11,0.0748,fuga_bomba,45,vae
+2,fuga severa,144,19,0.1319,fuga_bomba,46,baseline_agujas
+1,fuga debil,144,15,0.1042,fuga_bomba,46,baseline_agujas
+0,sin fuga,147,8,0.0544,fuga_bomba,46,baseline_agujas
+2,fuga severa,144,144,1.0,fuga_bomba,46,mahalanobis
+1,fuga debil,144,144,1.0,fuga_bomba,46,mahalanobis
+0,sin fuga,147,6,0.0408,fuga_bomba,46,mahalanobis
+2,fuga severa,144,144,1.0,fuga_bomba,46,vae
+1,fuga debil,144,131,0.9097,fuga_bomba,46,vae
+0,sin fuga,147,5,0.034,fuga_bomba,46,vae
+2,fuga severa,144,41,0.2847,fuga_bomba,47,baseline_agujas
+1,fuga debil,144,24,0.1667,fuga_bomba,47,baseline_agujas
+0,sin fuga,147,3,0.0204,fuga_bomba,47,baseline_agujas
+2,fuga severa,144,144,1.0,fuga_bomba,47,mahalanobis
+1,fuga debil,144,144,1.0,fuga_bomba,47,mahalanobis
+0,sin fuga,147,4,0.0272,fuga_bomba,47,mahalanobis
+2,fuga severa,144,144,1.0,fuga_bomba,47,vae
+1,fuga debil,144,119,0.8264,fuga_bomba,47,vae
+0,sin fuga,147,5,0.034,fuga_bomba,47,vae
+2,fuga severa,144,32,0.2222,fuga_bomba,48,baseline_agujas
+1,fuga debil,144,16,0.1111,fuga_bomba,48,baseline_agujas
+0,sin fuga,147,4,0.0272,fuga_bomba,48,baseline_agujas
+2,fuga severa,144,144,1.0,fuga_bomba,48,mahalanobis
+1,fuga debil,144,144,1.0,fuga_bomba,48,mahalanobis
+0,sin fuga,147,6,0.0408,fuga_bomba,48,mahalanobis
+2,fuga severa,144,144,1.0,fuga_bomba,48,vae
+1,fuga debil,144,144,1.0,fuga_bomba,48,vae
+0,sin fuga,147,9,0.0612,fuga_bomba,48,vae
+2,fuga severa,144,50,0.3472,fuga_bomba,49,baseline_agujas
+1,fuga debil,144,42,0.2917,fuga_bomba,49,baseline_agujas
+0,sin fuga,147,4,0.0272,fuga_bomba,49,baseline_agujas
+2,fuga severa,144,144,1.0,fuga_bomba,49,mahalanobis
+1,fuga debil,144,144,1.0,fuga_bomba,49,mahalanobis
+0,sin fuga,147,7,0.0476,fuga_bomba,49,mahalanobis
+2,fuga severa,144,144,1.0,fuga_bomba,49,vae
+1,fuga debil,144,144,1.0,fuga_bomba,49,vae
+0,sin fuga,147,5,0.034,fuga_bomba,49,vae
+2,fuga severa,144,13,0.0903,fuga_bomba,50,baseline_agujas
+1,fuga debil,144,9,0.0625,fuga_bomba,50,baseline_agujas
+0,sin fuga,147,3,0.0204,fuga_bomba,50,baseline_agujas
+2,fuga severa,144,144,1.0,fuga_bomba,50,mahalanobis
+1,fuga debil,144,144,1.0,fuga_bomba,50,mahalanobis
+0,sin fuga,147,7,0.0476,fuga_bomba,50,mahalanobis
+2,fuga severa,144,144,1.0,fuga_bomba,50,vae
+1,fuga debil,144,93,0.6458,fuga_bomba,50,vae
+0,sin fuga,147,9,0.0612,fuga_bomba,50,vae
+2,fuga severa,144,15,0.1042,fuga_bomba,51,baseline_agujas
+1,fuga debil,144,12,0.0833,fuga_bomba,51,baseline_agujas
+0,sin fuga,147,12,0.0816,fuga_bomba,51,baseline_agujas
+2,fuga severa,144,144,1.0,fuga_bomba,51,mahalanobis
+1,fuga debil,144,144,1.0,fuga_bomba,51,mahalanobis
+0,sin fuga,147,8,0.0544,fuga_bomba,51,mahalanobis
+2,fuga severa,144,144,1.0,fuga_bomba,51,vae
+1,fuga debil,144,133,0.9236,fuga_bomba,51,vae
+0,sin fuga,147,4,0.0272,fuga_bomba,51,vae

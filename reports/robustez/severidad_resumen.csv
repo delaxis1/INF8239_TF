@@ -1,0 +1,23 @@
+objetivo,severidad,alternativa,mean,std
+acumulador,cerca del fallo total,mahalanobis,0.7333,0.2541
+acumulador,cerca del fallo total,vae,0.4298,0.1423
+acumulador,optimo,mahalanobis,0.0593,0.0398
+acumulador,optimo,vae,0.0694,0.0424
+acumulador,presion ligeramente reducida,mahalanobis,0.437,0.0863
+acumulador,presion ligeramente reducida,vae,0.4009,0.076
+acumulador,presion severamente reducida,mahalanobis,0.5768,0.1702
+acumulador,presion severamente reducida,vae,0.4556,0.1271
+fuga_bomba,fuga debil,mahalanobis,1.0,0.0
+fuga_bomba,fuga debil,vae,0.891,0.1168
+fuga_bomba,fuga severa,mahalanobis,1.0,0.0
+fuga_bomba,fuga severa,vae,1.0,0.0
+fuga_bomba,sin fuga,mahalanobis,0.0496,0.0246
+fuga_bomba,sin fuga,vae,0.0503,0.0203
+valvula,cerca del fallo total,mahalanobis,1.0,0.0
+valvula,cerca del fallo total,vae,1.0,0.0
+valvula,optimo,mahalanobis,0.0775,0.0332
+valvula,optimo,vae,0.073,0.0283
+valvula,retardo pequeno,mahalanobis,0.9991,0.0029
+valvula,retardo pequeno,vae,0.6306,0.348
+valvula,retardo severo,mahalanobis,1.0,0.0
+valvula,retardo severo,vae,1.0,0.0

@@ -1,0 +1,26 @@
+{
+  "semillas": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "objetivos": [
+    "valvula",
+    "acumulador",
+    "fuga_bomba"
+  ],
+  "tasa_falsas_alarmas": 0.05,
+  "que_cambia_entre_repeticiones": "solo la particion estratificada",
+  "linea_de_azar": {
+    "valvula": 0.7453,
+    "acumulador": 0.7516,
+    "fuga_bomba": 0.6625
+  }
+}

@@ -55,16 +55,24 @@ VALVULA_NIVELES = {100: "optimo", 90: "retardo pequeno", 80: "retardo severo",
                    73: "cerca del fallo total"}
 ACUMULADOR_NIVELES = {130: "optimo", 115: "presion ligeramente reducida",
                       100: "presion severamente reducida", 90: "cerca del fallo total"}
+FUGA_NIVELES = {0: "sin fuga", 1: "fuga debil", 2: "fuga severa"}
 
-# Los dos objetivos del trabajo. El refrigerador y la fuga de bomba quedan fuera: el
-# primero lo delata un solo sensor y el segundo, con el perfil temporal, también resulta
-# casi trivial. La válvula es el caso que demuestra la anomalía contextual; el acumulador
-# es el caso difícil, y la propia documentación del conjunto lo señala como el más complejo.
+# Los tres objetivos del trabajo, elegidos por dificultad creciente de deteccion con un
+# solo sensor. El refrigerador queda fuera: CE lo predice con 0.992 y TS1 con -0.911, de
+# modo que un operador lo veria en una sola aguja y no sirve para la pregunta.
+#
+#   valvula     correlacion maxima de un sensor 0.231  -> anomalia contextual pura
+#   fuga_bomba  correlacion maxima de un sensor 0.469  -> caso intermedio, y el componente
+#                                                         lo acciona el motor electrico
+#   acumulador  correlacion maxima de un sensor 0.241  -> el mas complejo segun la
+#                                                         documentacion del conjunto
 OBJETIVOS: dict[str, dict] = {
     "valvula": {"optimo": 100, "niveles": VALVULA_NIVELES,
                 "descripcion": "retardo de conmutacion de la valvula"},
     "acumulador": {"optimo": 130, "niveles": ACUMULADOR_NIVELES,
                    "descripcion": "presion del acumulador hidraulico"},
+    "fuga_bomba": {"optimo": 0, "niveles": FUGA_NIVELES,
+                   "descripcion": "fuga interna de la bomba accionada por el motor"},
 }
 OBJETIVO_POR_DEFECTO = "valvula"
 

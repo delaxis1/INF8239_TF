@@ -11,8 +11,9 @@ Maestría en Ciencias de Datos e Inteligencia Artificial · UASD
 **Sí avisa antes.** Donde el panel de agujas ve 8 de cada 100 válvulas con retardo pequeño,
 el detector las ve todas.
 
-**No hace falta un VAE.** La distancia de Mahalanobis le gana en los dos objetivos y en las
-dos ablaciones. Lo que decidió el resultado no fue el modelo sino **la representación**.
+**No hace falta un VAE.** La distancia de Mahalanobis gana **27 de 30** comparaciones
+repetidas con diez particiones sobre tres objetivos. Lo que decidió el resultado no fue el
+modelo sino **la representación**.
 
 | Válvula · 435 ciclos de prueba | PR-AUC | ROC-AUC | Recall | Falsas alarmas |
 |---|---|---|---|---|
@@ -21,6 +22,41 @@ dos ablaciones. Lo que decidió el resultado no fue el modelo sino **la represen
 | VAE | 0.9966 | 0.9912 | 0.870 | 2.7 % |
 
 Línea de azar del PR-AUC: **0.745**. Sin declararla, un 0.80 parece bueno y no lo es.
+
+## ¿Es real la diferencia, o fue suerte?
+
+Una sola partición no distingue «Mahalanobis gana» de «Mahalanobis ganó esta vez». El
+experimento se repitió con **diez particiones** sobre los **tres objetivos**, cambiando
+solo qué ciclos caen en entrenamiento y cuáles en prueba.
+
+| Objetivo | Mahalanobis gana | VAE gana | Alarma por aguja |
+|---|---|---|---|
+| Válvula | 7 de 10 | 3 de 10 | 0 |
+| Fuga de bomba | **10 de 10** | 0 | 0 |
+| Acumulador | **10 de 10** | 0 | 0 |
+
+**La parte incómoda:** en la válvula, los intervalos de confianza del PR-AUC se solapan —
+Mahalanobis [0.9870, 0.9961] frente a VAE [0.9863, 0.9918]—, de modo que **por PR-AUC la
+diferencia no es distinguible del ruido**. Medido una sola vez parecía una victoria; medido
+diez veces, no lo es.
+
+**Lo que sí distingue, y con holgura, es el recall y la estabilidad:**
+
+| Válvula | Recall medio | IC 95 % | Detección del retardo pequeño |
+|---|---|---|---|
+| **Mahalanobis** | **0.9997** | [0.9991, 1.0003] | **0.999 ± 0.003** |
+| VAE | 0.8768 | [0.8049, 0.9488] | 0.631 ± **0.348** |
+| Alarma por aguja | 0.1170 | [0.1034, 0.1305] | — |
+
+Esa desviación de **0.348** es el hallazgo: el VAE no detecta peor, **detecta de forma
+inestable**. En unas particiones ve el retardo pequeño y en otras casi no. Mahalanobis
+tiene una desviación de 0.003.
+
+El argumento correcto no es «Mahalanobis tiene mejor PR-AUC» —que en la válvula no se
+sostiene— sino **«Mahalanobis es estable y el VAE no»**, que se sostiene en los tres
+objetivos.
+
+Evidencia en `reports/robustez/`, generada por `scripts/run_seeds.py`.
 
 ## El hallazgo: la representación pesó más que el modelo
 
