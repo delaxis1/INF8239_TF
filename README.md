@@ -75,10 +75,11 @@ Mismo modelo, mismos datos, mismo protocolo. De casi azar a casi perfecto.
 
 Ciclo **1408**, válvula con retardo pequeño. El detector lo marca con 13.8 frente a un
 umbral de 9.3. **Ninguna de las 17 agujas está en zona roja**: la que más se acerca,
-, se queda al **36 %** de su límite.
+`PS2_media`, se queda al **36 %** de su límite.
 
-Lo que lo delata son las presiones y la potencia de refrigeración **en el primer sexto del
-ciclo**, que es exactamente donde se manifiesta un retardo de conmutación. Ninguna de esas
+Lo que lo delata son `PS2_t1`, `PS3_t1` y `CP_desv` — presiones y potencia de refrigeración
+**en el primer sexto del ciclo**, que es exactamente donde se manifiesta un retardo de
+conmutación. Ninguna de esas
 lecturas, por separado, sale de lo normal. Es la combinación la que no existe en una
 máquina sana.
 
