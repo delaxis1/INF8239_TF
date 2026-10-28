@@ -62,12 +62,18 @@ exactas.
 
 `tests/test_documentacion.py` lee las cifras de `reports/` y comprueba que aparecen
 literalmente en el `README.md` y en el `MODEL_CARD.md`: PR-AUC y ROC-AUC de las tres
-alternativas en los dos objetivos, la línea de azar, la detección por nivel de severidad y
+alternativas en los objetivos evaluados, la línea de azar, la detección por nivel de severidad y
 el recall por régimen de refrigeración.
 
 Si alguien vuelve a ejecutar un script y una cifra cambia, **la suite falla** en lugar de
 dejar una documentación que miente. Eso es lo que convierte «sin cifras a mano» de promesa
 en propiedad comprobada.
+
+> **Alcance de esta comprobación.** Se hizo sobre la versión etiquetada `tf-entrega`, con
+> dos objetivos y 55 archivos en `reports/`. Las versiones posteriores añaden un tercer
+> objetivo, diez particiones, el caso trabajado y las figuras, de modo que hoy `reports/`
+> tiene más archivos. El procedimiento es el mismo y los scripts siguen siendo
+> deterministas; lo que no se ha repetido es la comparación byte a byte completa.
 
 ## 4. Lo que esta verificación no cubre
 

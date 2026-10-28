@@ -202,6 +202,39 @@ ve todas desde el primer nivel.
 
 ---
 
+## 8-bis. UN CASO CONCRETO: lo que el operador no habría visto
+
+Esto es lo que hay que poder contar en la defensa sin mirar notas.
+
+**Ciclo 1408**, válvula con **retardo pequeño** — el nivel más leve, el que el operador no
+ve.
+
+| | |
+|---|---|
+| Puntuación del detector | **13.819**, con el umbral en 9.251 |
+| Agujas en zona roja | **0. Ninguna de las 17** |
+| La que más se acercó | `PS2_media`, al **36 %** de su límite |
+| Lo que lo delató | `PS2_t1`, `PS3_t1`, `CP_desv` |
+
+El nombre indica sensor y tramo: `PS2_t1` es la presión PS2 en el **primer sexto** de los 60
+segundos. Son presiones y potencia de refrigeración **al principio del ciclo**, que es
+exactamente donde se manifiesta un retardo de conmutación: la válvula tarda un poco más en
+abrir, la presión sube más tarde, y el promedio del ciclo apenas lo nota.
+
+**Ninguna de esas lecturas, por separado, sale de lo normal. Es la combinación la que no
+existe en una máquina sana.**
+
+### Y no es un caso elegido a dedo
+
+Dos salvaguardas, por si lo preguntan:
+
+1. **La regla de selección se declaró antes de mirar**: entre los ciclos del nivel más leve
+   que el modelo marca y que no disparan ninguna aguja, el de **aguja más tranquila**. Es
+   decir, el caso en que el panel estaba más lejos de sospechar.
+2. **260 de los 324 ciclos degradados** del conjunto de prueba se detectan sin que ninguna
+   aguja salga de banda. **El 80 % de lo que el sistema encuentra es invisible para el
+   panel.** El ciclo 1408 ilustra la regla, no la excepción.
+
 ## 9. ¿Es real la diferencia, o fue suerte?
 
 Esta es la sección más importante para defender el trabajo, porque corrige una afirmación
@@ -321,6 +354,12 @@ lo acordado; entonces la priorización vuelve al orden por fecha.
 Se repitió con diez particiones y se publicaron las medias con sus intervalos de confianza.
 Eso reveló que en la válvula la diferencia de PR-AUC estaba dentro del ruido, y obligó a
 cambiar el argumento de «mejor PR-AUC» a «más estable». La corrección está documentada.
+
+**¿Puedes enseñarme un caso?**
+El ciclo 1408: retardo pequeño, puntuación 13.8 contra un umbral de 9.3, y cero agujas en
+zona roja. La que más se acerca se queda al 36 % de su límite. Lo delatan las presiones y
+la potencia de refrigeración en el primer sexto del ciclo. Y no es excepcional: el 80 % de
+lo que el sistema detecta es invisible para el panel.
 
 **¿Por qué el VAE, si al final no lo usas?**
 Porque el tema pedía entrenarlo y usar su error de reconstrucción, y porque sin medirlo no

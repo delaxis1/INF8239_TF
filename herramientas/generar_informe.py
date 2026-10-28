@@ -483,16 +483,17 @@ def build(ev: dict, repo_url: str | None) -> Path:
                    "falsas alarmas, y mantiene ese rendimiento con el resto de la máquina "
                    "degradada. El del acumulador no: depende del régimen y su recall cae a "
                    "0.009 con el refrigerador sano.", size=10.5, after=4)
-    paragraph(doc, "**Con Mahalanobis, no con el VAE.** Gana en los dos objetivos y en las "
-                   "dos ablaciones, con menos parámetros y 2000 veces menos cómputo de "
-                   "ajuste. Mantener el VAE en producción sería pagar más por menos.",
-              size=10.5, after=4)
+    paragraph(doc, "**Con Mahalanobis, no con el VAE.** Gana 27 de las 30 comparaciones "
+                   "repetidas sobre los tres objetivos, con menos parámetros y 2000 veces "
+                   "menos cómputo de ajuste. Y donde el PR-AUC no los distingue, los "
+                   "distingue la estabilidad. Mantener el VAE en producción sería pagar "
+                   "más por menos.", size=10.5, after=4)
     paragraph(doc, "**Y antes de llevarlo a una planta: volver a medir.** Con la "
-                   "prevalencia real, con más de una partición y comprobando que el "
-                   "régimen de operación observado es el mismo con el que se entrenó. El "
-                   "sistema se retira si la tasa de confirmación de las inspecciones cae "
-                   "por debajo de lo acordado, y la priorización vuelve al orden por fecha.",
-              size=10.5, after=3)
+                   "prevalencia real, sobre una máquina distinta de este banco, y "
+                   "comprobando que el régimen de operación observado es el mismo con el "
+                   "que se entrenó. El sistema se retira si la tasa de confirmación de las "
+                   "inspecciones cae por debajo de lo acordado, y la priorización vuelve "
+                   "al orden por fecha.", size=10.5, after=3)
 
     # Referencias
     heading(doc, "Referencias")
