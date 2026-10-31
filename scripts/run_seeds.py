@@ -9,6 +9,11 @@ Nada más cambia entre repeticiones: misma extracción, mismo filtro de estabili
 regla de umbral y los mismos tres detectores. Lo único que varía es qué ciclos caen en
 entrenamiento y cuáles en prueba.
 
+`por_semilla.csv` incluye también el coste de cada alternativa —`ajuste_s`, `tamano_kb` y
+`parametros`— medido con la misma convención que `scripts/run_models.py`. Los tiempos son
+medidas físicas de una máquina compartida: varían entre ejecuciones y se leen como órdenes
+de magnitud, no como cifras exactas. Ninguna métrica del informe depende de ellos.
+
 Uso:
     uv run python scripts/run_seeds.py --semillas 10
 """
@@ -43,20 +48,33 @@ def una_repeticion(tabla: pd.DataFrame, objetivo: str, semilla: int) -> tuple[li
     ajuste, validacion = normales.iloc[:corte], normales.iloc[corte:]
     variables = columnas_sensor(tabla)
 
-    detectores = {
-        "baseline_agujas": AlarmaPorAguja.ajustar(ajuste, columnas_aguja(tabla)),
-        "mahalanobis": Mahalanobis(variables).ajustar(ajuste),
-        "vae": DetectorVAE(variables).ajustar(ajuste, validacion),
-    }
+    agujas = columnas_aguja(tabla)
+
+    # El reloj cubre **solo el ajuste**, y el tamaño sale del número de parámetros por el
+    # ancho de su tipo: float64 en la covarianza de Mahalanobis, float32 en los pesos del
+    # VAE. Es la misma convención que `scripts/run_models.py`, para que `ajuste_s` y
+    # `tamano_kb` signifiquen lo mismo en `robustez/` y en `modelos_*/`.
+    inicio = time.perf_counter()
+    alarma = AlarmaPorAguja.ajustar(ajuste, agujas)
+    detectores = [("baseline_agujas", alarma, time.perf_counter() - inicio,
+                   0.0, len(agujas) * 3)]
+
+    inicio = time.perf_counter()
+    maha = Mahalanobis(variables).ajustar(ajuste)
+    detectores.append(("mahalanobis", maha, time.perf_counter() - inicio,
+                       maha.parametros * 8 / 1024, maha.parametros))
+
+    inicio = time.perf_counter()
+    vae = DetectorVAE(variables).ajustar(ajuste, validacion)
+    detectores.append(("vae", vae, time.perf_counter() - inicio,
+                       vae.parametros * 4 / 1024, vae.parametros))
 
     metricas, severidades = [], []
-    for nombre, detector in detectores.items():
-        inicio = time.perf_counter()
+    for nombre, detector, segundos, kb, parametros in detectores:
         umbral = umbral_por_falsas_alarmas(detector.puntuar(validacion), TASA_FALSAS_ALARMAS)
         puntuacion = detector.puntuar(prueba)
-        fila = evaluar(nombre, prueba, puntuacion, umbral, CAPACIDAD_TURNO,
-                       time.perf_counter() - inicio, 0.0)
-        fila.update({"objetivo": objetivo, "semilla": semilla})
+        fila = evaluar(nombre, prueba, puntuacion, umbral, CAPACIDAD_TURNO, segundos, kb)
+        fila.update({"parametros": parametros, "objetivo": objetivo, "semilla": semilla})
         metricas.append(fila)
 
         for sev in deteccion_por_severidad(prueba, puntuacion, umbral).to_dict("records"):

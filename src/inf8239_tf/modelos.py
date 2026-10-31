@@ -5,9 +5,12 @@ aprendido. La diferencia está en qué entienden por «lo normal»:
 
 - **Mahalanobis** modela una sola nube gaussiana y sus correlaciones lineales. Es el
   competidor honesto del VAE: si la relación entre sensores es lineal, esto basta, no hace
-  falta ninguna red, y decirlo sería el resultado del trabajo. Con 85 variables y 172
-  ciclos la covarianza empírica es singular, así que se usa el encogimiento de
-  Ledoit-Wolf, que es la forma estándar de estimarla cuando hay más variables que muestras.
+  falta ninguna red, y decirlo sería el resultado del trabajo. Con 112 variables y 172
+  ciclos de ajuste la covarianza empírica **es exactamente singular** —rango 95 de 112—,
+  y no por falta de muestras: la media de cada sensor es la media de sus propios tramos,
+  así que 17 columnas son combinación lineal exacta de otras. El encogimiento de
+  Ledoit-Wolf es lo que la vuelve invertible, mezclándola con un múltiplo de la identidad
+  en la proporción que minimiza el error esperado.
 - **VAE** aprende una superficie que puede ser curva y multimodal. Se queda con el puesto
   solo si la relación entre sensores **no** es lineal.
 
